@@ -1,0 +1,452 @@
+{% extends 'commune/base.html' %}
+
+{% block content %}
+{% load static %}
+  <!-- About Start -->
+  <div class="container-xxl position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0" style="border">
+      <a href="" class="navbar-brand p-0">
+        <!-- h1 class="m-0">Pycon<span class="fs-5">Ardhi</span></h1 -->
+        <img src="{% static 'img/pycon-black.jpg' %}" alt="Logo" />
+        <img src="{% static 'img/WhatsApp Image 2025-04-10 at 14.25.28_a9766431.jpg' %}" alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"><span class="fa fa-bars"></span></button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto py-0">
+          <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+          <a href="{% url 'events' %}" class="nav-item nav-link">Events</a>
+          <a href="{% url 'code_of_conduct' %}" class="nav-item nav-link">Code Of Conduct</a>
+          <a href="{% url 'register' %}" class="nav-item nav-link">Join Our Community</a>
+        </div>
+        <!-- button type="button" class="btn text-secondary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
+                <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Pro Version</a  -->
+      </div>
+    </nav>
+  </div>
+  <!-- Navbar & Hero Ends -->
+
+  <div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+      <div class="row g-5 py-5">
+        <div class="col-lg-8">
+          <h1 class="display-1 text-white pb-8 animated zoomIn">Pycon Ardhi</h1>
+          <h2 class="h6 mt-4 text-white animated zoomIn">Step into a vibrant community where Python Developers, creative minds, and tech enthusiasists unite. </br> Whether you're an experienced coder or just beginning your journey, you'll find a welcoming space to learn, grow.</h2>
+        </div>
+        <div class="col-lg-4 text-center text-lg-start">
+          <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="img-fluid rounded" src="{% static 'img/P4061665.JPG' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1949.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1939.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1921.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1922.jpg' %}" alt="" />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev"><span class="fa fa-chevron-left text-white"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next"><span class="fa fa-chevron-right text-white"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Search Start -->
+  <div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
+        <div class="modal-header border-0">
+          <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <div class="input-group" style="max-width: 600px;">
+            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword" />
+            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Search End -->
+
+  <!-- About Start -->
+  <div class="container-xxl py-5">
+    <div class="container px-lg-5">
+      <div class="row g-5">
+        <div class="col-lg-6 text-center text-lg-start">
+          <h1 class="text-black mb-4 animated zoomIn">Join the Pycon Ardhi Chapter Today!</h1>
+          <p class="text-black pb-3 animated zoomIn">We’re thrilled to have you join our vibrant Python Community! This is your gateway to explore the endless possibilities of Python, from building powerful applications to solving real-world challenges.</p>
+          <a href="https://www.youtube.com" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="col-lg-6 text-center text-lg-start">
+          <h1 class="text-black pb-3 animated zoomIn">Join the DjangoGirls Ardhi Community</h1>
+          <p class="text-black pb-3 animated zoomIn">We're thrilled to have you join our vibrant DjangoGirls Community! This is your gateway to explore the endless possibilities of Django, from building powerful website applications to solve real-world challenges.</p>
+          <a href="https://www.youtube.com" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- About End -->
+
+  <!-- Full Screen Search Start -->
+  <div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
+        <div class="modal-header border-0">
+          <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <div class="input-group" style="max-width: 600px;">
+            <input type="text" id="searchInput" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword" />
+            <button class="btn btn-light px-4" id="searchButton"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <div id="searchResults" style="max-width: 600px; color: white;"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <!-- script>
+        document.getElementById('searchButton').addEventListener('click', function () {
+          var query = document.getElementById('searchInput').value.toLowerCase()
+          var resultsContainer = document.getElementById('searchResults')
+          resultsContainer.innerHTML = ''
+        
+          // Example data to search from
+          var data = ['Inspiration page!', 'Join the Pycon Ardhi Chapter Today!', 'Join the DjangoGirls Ardhi Community', 'Workshops, hackathons, and networking events']
+        
+          var results = data.filter(function (item) {
+            return item.toLowerCase().includes(query)
+          })
+        
+          if (results.length > 0) {
+            results.forEach(function (result) {
+              var resultItem = document.createElement('div')
+              resultItem.textContent = result
+              resultsContainer.appendChild(resultItem)
+            })
+          } else {
+            resultsContainer.textContent = 'No results found'
+          }
+        })
+      </script -->
+      <!-- Full Screen Search End -->
+
+      <!--   About Start 
+        About End   -->
+
+      <!-- Sponsors Start -->
+      <div class="container-xxl py-5">
+        <div class="container px-lg-5">
+          <div class="row g-5 text-center">
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/logo.jpg' %}" alt="" class="img-fluid mb-3" />
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/pycon-black.jpg' %}" alt="Sponsor 2" class="img-fluid mb-3" />
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/djnew.png' %}" alt="Sponsor 3" class="img-fluid mb-3" />
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/brand-shield (1).png' %}" alt="Sponsor 4" class="img-fluid mb-3" />
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/logo_B.png' %}" alt="Sponsor 5" class="img-fluid mb-3" />
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <img src="{% static 'img/logo.png' %}" alt="Sponsor 6" class="img-fluid mb-3" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sponsors End -->
+
+  <!-- expect chapter -->
+  <section class="cards">
+    <div class="container-xxl py-5">
+      <div class="container px-lg-5">
+        <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+          <!-- h6 class="position-relative d-inline text-primary ps-4">About Us</h6 -->
+          <h2 class="mt-2">What should you expect from the Chapter</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Workshops</h5>
+              <p>Participants explore topics like Python programming, artificial intelligence, web development, and networking, guided by experts and peers.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'events' %}">Read More</a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Events</h5>
+              <p>Bring the community together, featuring guest speakers, panel discussions, and opportunities to learn about the latest advancements in technology.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'events' %}">Read More</a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.6s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Hackathons</h5>
+              <p>Provide an exciting platform for members to collaborate, compete, and develop creative solutions to real-world challenges.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'events' %}">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- expect chapter end -->
+
+  <!-- Inspiration Page -->
+  <!--   section class="intro bg-light rounded p-5" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="'container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <img src="img/workshop1.jpg" alt="Intro Image" class="img-fluid rounder" style="border-radius: 15px;">
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Inspiring learners to fall in love with programming!</h1>
+                        <p>Pycon Ardhi and DjangoGirls organizes free python and Django workshops, creates open-source tutorials and curates amazing first experience with technology.</p>            
+                    </div>
+                </div>
+            </div>
+        </section>
+        Inspiration Page End   -->
+
+  <!-- Past Events, Talks, and Workshops Start -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="{% static 'img/workshop1.jpg' %}" alt="Workshop 1" class="img-fluid rounded" />
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/workshop2.jpg' %}" alt="Workshop 2" class="img-fluid rounded" />
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/WhatsApp Image 2025-01-16 at 13.33.08_c4a1a5a7.jpg' %}" alt="Workshop 3" class="img-fluid rounded" />
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/P4061580.JPG' %}" alt="Workshop 4" class="img-fluid rounded" />
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/P4061597.JPG' %}" alt="Workshop 5" class="img-fluid rounded" />
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/P4061681.JPG' %}" alt="Workshop 6" class="img-fluid rounded" />
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+  <!-- Past Events, Talks, and Workshops End -->
+
+  <!-- Initialize Swiper -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      coverflowEffect: {
+        rotate: 30,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    })
+  </script>
+  <!-- Past Events, Talks, and Workshops End -->
+
+  <!-- Testimonial Start -->
+  <div class="container-xxl bg-primary testimonial py-5 my-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+      <div class="owl-carousel testimonial-carousel">
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>Joining Pycon Ardhi has been a transformative experience. The workshops and events have significantly improved my Python skills and connected me with a supportive community.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/enoshi.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Godfrey Enoshi</h6>
+              <small>AI/ML Engineer</small>
+              <small>Sartfy</small>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>The DjangoGirls workshops have been incredibly empowering. I've learned so much about web development and met amazing people who share my passion for coding.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/agatha.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Agath Mkeng'e</h6>
+              <small>Project Manager</small>
+              <small>IPF technology</small>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>Pycon Ardhi has provided me with invaluable networking opportunities. The hackathons and events have helped me grow both personally and professionally.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/rajabu.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Rajabu Rajabu</h6>
+              <small>Software Developer</small>
+              <small>Tera tech</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Testimonial End -->
+
+  <!-- Team Start -->
+  <div class="container-xxl py-5">
+    <div class="container px-lg-5">
+      <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+        <h6 class="position-relative d-inline text-primary ps-4">Our Team</h6>
+        <h2 class="mt-2">Meet Our Team Members</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/IMG_20230512_203455_667.jpg' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">VeryniceGlory Lazaro</h5>
+              <small>Chapter Lead</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/innocenct-removebg.png' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">Innocent Kiwoly</h5>
+              <small>Executive Chapter Lead</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/WhatsApp Image 2025-02-28 at 22.15.25_d0d32b6a.jpg' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">Goodluck Moshi</h5>
+              <small>Project Manager</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Team End -->
+
+  <!-- Statistic start -->
+  <div class="container-xxl py-5 bg-light" id="counter">
+    <div class="container px-lg-5">
+      <div class="row g-5 text-center">
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4"><span id="studentCount">187</span>+</h2>
+            <p class="mb-0">Student Members</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4"><span id="alumniCount">87</span>+</h2>
+            <p class="mb-0">Alumni Members</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4"><span id="facilitatorCount">5</span>+</h2>
+            <p class="mb-0">Facilitators</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- include CountUp.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.7/countUp.min.js"></script>
+
+  <!-- Initialize CountUp -->
+  <script>
+    // Ensure the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      // Create a new CountUp instance
+      var studentCount = new CountUp('studentCount', 140)
+      var alumniCount = new CountUp('alumniCount', 30)
+      var facilitatorCount = new CountUp('facilitatorCount', 5)
+    
+      if (!studentCount.error) {
+        studentCount.start()
+      } else {
+        console.error(studentCount.error)
+      }
+    
+      if (!alumniCount.error) {
+        alumniCount.start()
+      } else {
+        console.error(alumniCount.error)
+      }
+    
+      if (!facilitatorCount.error) {
+        facilitatorCount.start()
+      } else {
+        console.error(facilitatorCount.error)
+      }
+    })
+  </script>
+  <!-- Statistic End -->
+{% endblock %}

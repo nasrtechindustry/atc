@@ -1,0 +1,30 @@
+{% extends 'commune/base.html' %}
+
+{% load static %}
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <h2>Login</h2>
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <script>
+      // Redirect to index.html after successful login
+      {% if user.is_authenticated %}
+        window.location.href = "{% url 'index' %}";
+      {% endif %}
+      </script>
+    </div>
+  </div>
+</div>
+{% endblock %}

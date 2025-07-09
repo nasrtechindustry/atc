@@ -1,0 +1,42 @@
+{% extends 'commune/base.html' %}
+
+{% load static %}
+{% block content %}
+<!-- Registration Form Start -->
+<div class="container my-5 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="row w-100" style="max-width: 800px;">
+    <div class="col-lg-12">
+      <h2 class="mb-4 text-center">Register</h2>
+      <form method="POST" class="p-4 border rounded bg-light shadow">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+      <div class="mt-3">
+        <p>Already have an account? 
+          <a href="{% url 'login' %}" class="btn btn-link">Log in</a>
+        </p>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <!--img src="{% static 'img/registration_image.jpg' %}" class="img-fluid rounded" alt="Event Registration" />-->
+    </div>
+  </div>
+</div>
+<!-- Registration Form End -->
+{% endblock %}
