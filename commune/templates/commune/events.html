@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block content %}
-<style>
+<header>
+    <style>
   body {
       font-family: Arial, sans-serif;
       line-height: 1.6;
@@ -45,9 +46,6 @@
       margin-top: 40px;
   }
 </style>
-</head>
-<body>
-<header>
   <!--img src="{% static 'img/pycon-black.jpg' %}" alt="Logo" /-->
   <nav>
       <a href="{% url 'index' %}">Home</a>
