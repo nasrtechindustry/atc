@@ -1,2 +1,0 @@
-# pycon-ardhi
-community website
