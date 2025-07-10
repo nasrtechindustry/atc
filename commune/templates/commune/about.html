@@ -55,7 +55,7 @@
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0" style="border">
       <a href="" class="navbar-brand p-0">
         <!-- h1 class="m-0">Pycon<span class="fs-5">Ardhi</span></h1 -->
-        <img src="{% static 'img/pycon-black.jpg' %}" alt="Logo" />
+        {% comment %} <img src="{% static 'img/pycon-black.jpg' %}" alt="Logo" /> {% endcomment %}
         <img src="{% static 'img/WhatsApp Image 2025-04-10 at 14.25.28_a9766431.jpg' %}" alt="Logo" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"><span class="fa fa-bars"></span></button>
@@ -72,7 +72,7 @@
     </nav>
 </div>
 
-<div class="container-xxl py-5 bg-primary hero-header mb-5 position-relative" style="background-image: url('{% static "img/WhatsApp Image 2025-02-08 at 19.26.35_3c6fb935.jpg" %}'); background-size: cover; background-position: center; background-repeat: no-repeat; overflow: hidden; height: 100vh;">
+<div class="container-xxl py-5 bg-primary hero-header mb-5 position-relative" style="background-image: url('{% static "img/JTM_0479.jpg" %}'); background-size: cover; background-position: center; background-repeat: no-repeat; overflow: hidden; height: 100vh;">
     <!-- Add a blur effect to the background -->
     <div class="position-absolute top-0 start-0 w-100 h-100" style="filter: blur(10px); z-index: -1;"></div>
     <!-- Add a semi-transparent overlay -->
@@ -81,8 +81,8 @@
         <div class="row g-5 py-5">
             <div class="col-12">
                 <h1 class="display-1 text-white pb-8 animated zoomIn">About Us</h1>
-                <h2 class="h4 mt-4 text-white animated zoomIn">Inspiring learners to fall in love with programming.</h2>
-            </div>
+                <h2 class="h4 mt-4 text-white animated zoomIn" style="font-family: 'Bubblegum Sans', cursive;">Inspiring learners to fall in love with programming.</h2>
+                <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet"></div>
         </div>
         <!-- div class="col-lg-4 text-center text-lg-start"-->
         <!-- div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
