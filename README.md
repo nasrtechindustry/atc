@@ -1,1 +1,0 @@
-# aru-tech-community
