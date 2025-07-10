@@ -1,0 +1,157 @@
+{% extends 'commune/base.html' %}
+
+{% block content %}
+{% load static %}
+        <!-- Events Start -->
+        <div class="container-xxl position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+                <a href="" class="navbar-brand p-0">
+                    <!-- h1 class="m-0">Pycon<span class="fs-5">Ardhi</span></h1 -->
+                    <img src="{% static 'img/pycon-black.jpg' %}" alt="Logo">
+                    <img src="{% static 'img/WhatsApp Image 2025-04-10 at 14.25.28_a9766431.jpg' %}" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0">
+                        <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                        <a href="{% url 'events' %}" class="nav-item nav-link">Events</a>
+                        <a href="{% url 'code_of_conduct' %}" class="nav-item nav-link">Code Of Conduct</a>
+                        <a href="{% url 'register' %}" class="nav-item nav-link">Join Our Community</a>
+                    </div>
+                    <!--button type="button" class="btn text-secondary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
+                     <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Pro Version</a -->
+                </div>
+            </nav>
+        </div>
+        <!-- Navbar & Hero Ends -->
+        
+        <div class="container-xxl py-5 bg-primary hero-header mb-5">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-lg-8">
+                        <h1 class="display-1 text-white pb-8 animated zoomIn">Join now to be part of our community.</h1>
+                    </div>
+                <div class="col-lg-4 text-center text-lg-start">
+                <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="img-fluid rounded" src="{% static 'img/P4061665.JPG' %}" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="img-fluid rounded" src="{% static 'img/JTM_1949.jpg' %}" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="img-fluid rounded" src="{% static 'img/JTM_1939.jpg' %}" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="img-fluid rounded" src="{% static 'img/JTM_1921.jpg' %}" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="img-fluid rounded" src="{% static 'img/JTM_1922.jpg' %}" alt="">
+                        </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                            <span class="fa fa-chevron-left text-white"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                            <span class="fa fa-chevron-right text-white"></span>
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar & Hero End -->
+
+
+        <!-- Full Screen Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
+                    <div class="modal-header border-0">
+                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center justify-content-center">
+                        <div class="input-group" style="max-width: 600px;">
+                            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword">
+                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Full Screen Search End -->
+
+
+        <!-- Events Start -->
+        <section class="events">
+            <div class="events-header">
+                <h2>EVENTS</h2>
+                <select class="event-filter" id="eventFilter" onchange="filterEvents(this.value)">
+                    <option value="all">All events</option>
+                    <option value="past">Past events</option>
+                    <option value="upcoming">Upcoming events</option>
+                    <option value="workshops">Workshops</option>
+                    <option value="hackathons">Hackathons</option>
+                </select>
+                <button class="btn btn-primary" onclick="window.location.href='{% url 'create_event' %}'">Create Event</button>
+            </div>
+            <div class="events-list">
+                {% for event in events %}
+                <div class="event" data-date="{{ event.event_date|date:'Y-m-d' }}" data-type="event-type">
+                    <h3>{{ event.event_date }}</h3>
+                    <h4>{{ event.title }}</h4>
+                    <p>{{ event.description }}</p>
+                    <a href="{% url 'update_event' event.id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'delete_event' event.id %}" class="btn btn-danger">Delete</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        <!-- Events End -->
+         
+<script>
+    function filterEvents(filterType) {
+        const events = document.querySelectorAll('.event');
+        const today = new Date();
+        
+        events.forEach(event => {
+            const eventDate = new Date(event.getAttribute('data-date'));
+            
+            // Reset visibility
+            event.style.display = 'block';
+            
+            if (filterType === 'past') {
+                // Hide events that are in the future
+                if (eventDate >= today) {
+                    event.style.display = 'none';
+                }
+            } else if (filterType === 'upcoming') {
+                // Hide events that are in the past
+                if (eventDate < today) {
+                    event.style.display = 'none';
+                }
+            } else if (filterType === 'workshops' || filterType === 'hackathons') {
+                // Implement filtering by event type if you have that data
+                // This requires adding a data-type attribute to each event
+                const eventType = event.getAttribute('data-type');
+                if (eventType !== filterType) {
+                    event.style.display = 'none';
+                }
+            }
+            // For 'all', we've already reset all events to display:block
+        });
+    }
+    
+    // Initialize filtering when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterSelect = document.getElementById('eventFilter');
+        if (filterSelect) {
+            filterEvents(filterSelect.value);
+        }
+    });
+</script>
+{% endblock %}
