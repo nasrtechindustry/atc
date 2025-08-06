@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cqwc3_!!43rv8!9mems5m*5*!l
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 # Updated ALLOWED_HOSTS to include the specific deploy.tz domain
-ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,aru-tech-community.deploy.tz,.deploy.tz')
+ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', 'aru-tech-community.deploy.tz')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',')]
 
 
