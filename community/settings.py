@@ -31,7 +31,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cqwc3_!!43rv8!9mems5m*5*!l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,*.deploy.tz,deploy.tz').split(',')
+# Updated ALLOWED_HOSTS to include the specific deploy.tz domain
+ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,aru-tech-community.deploy.tz,.deploy.tz')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',')]
 
 
 # Application definition
@@ -185,4 +187,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = [
     'https://*.deploy.tz',
     'https://deploy.tz',
+    'https://aru-tech-community.deploy.tz',
+    'http://aru-tech-community.deploy.tz',  # In case HTTPS redirect isn't working yet
 ]
