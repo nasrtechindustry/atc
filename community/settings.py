@@ -63,7 +63,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'community.urls'
@@ -142,8 +141,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Google OAuth2 settings for django-allauth
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'APP': {
+            'client_id': 'CHANGEME',
+            'secret': 'CHANGEME',
+            'key': ''
+        },
         'SCOPE': [
             'profile',
             'email',
@@ -154,8 +161,3 @@ SOCIALACCOUNT_PROVIDERS = {
         'OAUTH_PKCE_ENABLED': True,
     }
 }
-
-SOCIALACCOUNT_LOGIN_ON_GET = True
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENTID = 'CHANGEME'
-SOCIAL_AUTH_GOOGLE_OAUTH_SECRET = 'CHANGEME'
