@@ -5,9 +5,9 @@ gunicorn==21.2.0
 # Authentication
 django-allauth==0.58.2
 
-# Database adapters (uncomment based on your database)
-# psycopg2-binary==2.9.9  # For PostgreSQL
-# mysqlclient==2.2.0      # For MySQL
+# Database adapters
+psycopg2-binary==2.9.9  # For PostgreSQL (deploy.tz default)
+dj-database-url==2.1.0  # For DATABASE_URL parsing
 
 # Common utilities
 Pillow==10.1.0           # For image processing
@@ -15,5 +15,5 @@ django-crispy-forms==2.0 # For better form rendering
 python-dotenv==1.0.0     # For environment variables
 whitenoise==6.6.0        # For static files handling
 
-# Development tools
-django-debug-toolbar==4.2.0
+# Development tools (comment out for production)
+# django-debug-toolbar==4.2.0

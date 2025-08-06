@@ -80,17 +80,23 @@ h6,
 
 
 /*** Navbar ***/
+.navbar {
+    padding-top: 10px; /* Adjust the value as needed */
+    padding-bottom: 10px; /* Adjust the value as needed */
+}
+
 .navbar-light .navbar-nav .nav-link {
     position: relative;
     margin-left: 25px;
-    padding: 35px 0;
+    margin-top: 0px;
+    padding: 10px 0; /* Adjusted value */
     color: var(--light) !important;
     outline: none;
     transition: .5s;
 }
 
 .sticky-top.navbar-light .navbar-nav .nav-link {
-    padding: 20px 0;
+    padding: 10px 0;
     color: var(--dark) !important;
 }
 
@@ -99,12 +105,8 @@ h6,
     color: var(--secondary) !important;
 }
 
-.navbar-light .navbar-brand h1 {
-    color: #FFFFFF;
-}
-
 .navbar-light .navbar-brand img {
-    max-height: 60px;
+    max-height: 45px; /* Adjusted value */
     transition: .5s;
 }
 
@@ -205,6 +207,27 @@ h6,
     }
 }
 
+/** About **/
+.background-overlay {
+    background-image: url(../img/WhatsApp\ Image\ 2025-02-08\ at\ 19.26.35_3c6fb935.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(10px);
+    height: 100vh;
+    position: relative;
+}
+
+.background-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent overlay */
+    z-index: 1;
+}
 
 /*** Hero Header ***/
 .hero-header {
@@ -615,4 +638,107 @@ h6,
 .col-sm-12 {
     flex: 0 0 50%;
     max-width: 50%;
+}
+
+.event-form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.event-form-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #555;
+  font-size: 16px;
+}
+
+.form-control {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+textarea.form-control {
+  min-height: 150px;
+  resize: vertical;
+}
+.narrow-textarea {
+    max-width: 400px;
+    width: 100%;
+}
+.btn-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #0069d9;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .event-form-container {
+    padding: 20px;
+    margin: 20px;
+  }
 }
