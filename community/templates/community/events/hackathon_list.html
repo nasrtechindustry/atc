@@ -10,7 +10,11 @@
     <div class="col-lg-4 col-md-6">
         <div class="card h-100 shadow-sm border-0 overflow-hidden" style="border-radius:16px;">
             <div class="position-relative" style="min-height:120px;background:var(--bs-warning-bg-subtle);">
+                {% if event.image %}
                 <img src="{{ event.image.url }}" class="card-img-top w-100" alt="{{ event.title }}" style="height:180px;object-fit:cover;" onerror="this.style.display='none';this.parentElement.style.background='rgba(255,193,7,.1)';this.parentElement.innerHTML+='<div class=\'d-flex align-items-center justify-content-center flex-column\' style=\'height:120px;\'><i class=\'bi bi-trophy text-warning fs-1 mb-1\'></i><span class=\'badge bg-warning text-dark px-3\'>Hackathon</span></div>'">
+                {% else %}
+                <div class="d-flex align-items-center justify-content-center flex-column" style="height:120px;"><i class="bi bi-trophy text-warning fs-1 mb-1"></i><span class="badge bg-warning text-dark px-3">Hackathon</span></div>
+                {% endif %}
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-start p-3" style="background: linear-gradient(180deg, rgba(0,0,0,.4) 0%, transparent 60%);pointer-events:none;">
                     <span class="badge bg-warning text-dark px-3 py-1 fs-6 fw-semibold rounded-pill">Hackathon</span>
                 </div>
