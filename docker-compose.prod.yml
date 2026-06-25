@@ -33,6 +33,9 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      CENTRIFUGO_CLIENT_TOKEN_HMAC_SECRET_KEY: ${CENTRIFUGO_TOKEN_HMAC_SECRET}
+      CENTRIFUGO_API_KEY: ${CENTRIFUGO_API_KEY:-aru-api-key-change-in-production}
     ports:
       - "127.0.0.1:10203:8000"
     volumes:
