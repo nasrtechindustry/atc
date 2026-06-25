@@ -54,7 +54,7 @@ services:
       DATABASE_URL: postgres://atc:${DB_PASSWORD:-atc_password}@db:5432/atc
       CENTRIFUGO_URL: http://centrifugo:8000
     volumes:
-      - atc_media:/app/media
+      - ./media:/app/media
     ports:
       - "127.0.0.1:10204:8000"
     networks:
@@ -67,4 +67,3 @@ networks:
 volumes:
   atc_db:
   atc_redis:
-  atc_media:
