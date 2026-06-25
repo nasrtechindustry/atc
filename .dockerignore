@@ -11,6 +11,6 @@ staticfiles/
 db.sqlite3
 *.md
 *.pdf
-community/static/img/
+# community/static/img/  # re-enabled for production - images needed on server
 community/static/scss/
 community/static/node_modules/
