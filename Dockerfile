@@ -7,7 +7,7 @@ ENV DJANGO_SETTINGS_MODULE=config.settings
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    postgresql-client libpq-dev build-essential \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
