@@ -11,11 +11,11 @@
     ]
   },
   "http_api": {
-    "key": "${CENTRIFUGO_API_KEY:-aru-api-key-change-in-production}"
+    "key": "set-via-env-var"
   },
   "admin": {
-    "password": "${CENTRIFUGO_ADMIN_PASSWORD:-admin}",
-    "secret": "${CENTRIFUGO_ADMIN_SECRET:-admin-secret-change-in-production}",
+    "password": "${CENTRIFUGO_ADMIN_PASSWORD}",
+    "secret": "${CENTRIFUGO_ADMIN_SECRET}",
     "enabled": true
   },
   "channel": {

@@ -928,6 +928,7 @@ from django.conf import settings
 CENTRIFUGO_SECRET = os.getenv('CENTRIFUGO_TOKEN_HMAC_SECRET', 'aru-community-secret-key-change-in-production')
 CENTRIFUGO_URL = os.getenv('CENTRIFUGO_URL', 'http://localhost:8001')
 CENTRIFUGO_WS_URL = os.getenv('CENTRIFUGO_WS_URL', 'ws://localhost:8001/connection/websocket')
+CENTRIFUGO_API_KEY = os.getenv('CENTRIFUGO_API_KEY', 'aru-api-key-change-in-production')
 
 
 def get_centrifugo_token(user, channel):
@@ -949,7 +950,7 @@ def chat_typing(request, event_id):
         req_lib.post(f'{CENTRIFUGO_URL}/api/publish', json={
             'channel': channel,
             'data': {'type': 'typing', 'user': request.user.username, 'user_id': request.user.id},
-        }, headers={'Authorization': f'apikey aru-api-key-change-in-production'}, timeout=2)
+        }, headers={'Authorization': f'apikey {CENTRIFUGO_API_KEY}'}, timeout=2)
     except:
         pass
     return JsonResponse({'ok': True})
@@ -1065,7 +1066,7 @@ def chat_messages(request, event_id):
                 'channel': channel,
                 'data': pub_data,
                 'skip_users': [str(request.user.id)],
-            }, headers={'Authorization': f'apikey aru-api-key-change-in-production'}, timeout=2)
+            }, headers={'Authorization': f'apikey {CENTRIFUGO_API_KEY}'}, timeout=2)
         except:
             pass
         return JsonResponse(msg_data)
@@ -1086,7 +1087,7 @@ def chat_delete(request, msg_id):
             req_lib.post(f'{CENTRIFUGO_URL}/api/publish', json={
                 'channel': channel,
                 'data': {'type': 'delete', 'id': msg.id},
-            }, headers={'Authorization': f'apikey aru-api-key-change-in-production'}, timeout=2)
+            }, headers={'Authorization': f'apikey {CENTRIFUGO_API_KEY}'}, timeout=2)
         except:
             pass
         return JsonResponse({'ok': True})
