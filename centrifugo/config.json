@@ -1,19 +1,21 @@
 {
   "client": {
     "token": {
-      "hmac_secret_key": "aru-community-secret-key-change-in-production"
+      "hmac_secret_key": "${CENTRIFUGO_TOKEN_HMAC_SECRET}"
     },
     "allowed_origins": [
       "http://localhost:8000",
-      "http://127.0.0.1:8000"
+      "http://127.0.0.1:8000",
+      "https://atc.codegraphics.co.tz",
+      "https://realtime.atc.codegraphics.co.tz"
     ]
   },
   "http_api": {
-    "key": "aru-api-key-change-in-production"
+    "key": "${CENTRIFUGO_API_KEY:-aru-api-key-change-in-production}"
   },
   "admin": {
-    "password": "admin",
-    "secret": "admin-secret-change-in-production",
+    "password": "${CENTRIFUGO_ADMIN_PASSWORD:-admin}",
+    "secret": "${CENTRIFUGO_ADMIN_SECRET:-admin-secret-change-in-production}",
     "enabled": true
   },
   "channel": {

@@ -31,6 +31,8 @@ services:
     image: centrifugo/centrifugo:v6
     container_name: atc_centrifugo
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - "127.0.0.1:10203:8000"
     volumes:
@@ -53,6 +55,7 @@ services:
     environment:
       DATABASE_URL: postgres://atc:${DB_PASSWORD:-atc_password}@db:5432/atc
       CENTRIFUGO_URL: http://centrifugo:8000
+      CENTRIFUGO_WS_URL: wss://realtime.atc.codegraphics.co.tz/connection/websocket
     volumes:
       - ./media:/app/media
     ports:

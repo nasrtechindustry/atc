@@ -406,7 +406,7 @@ $(document).ready(function() {
     fetch('/chat/' + eventId + '/token/')
         .then(function(r) { return r.json(); })
         .then(function(d) {
-            var centrifuge = new Centrifuge('ws://localhost:8001/connection/websocket', { token: d.token });
+            var centrifuge = new Centrifuge(d.ws_url || 'ws://localhost:8001/connection/websocket', { token: d.token });
             centrifuge.on('connecting', function() { chatStatus.textContent = 'connecting...'; $('#liveBadge').hide(); });
             centrifuge.on('connected', function() { chatStatus.textContent = ''; $('#liveBadge').show(); });
             centrifuge.on('disconnected', function() { chatStatus.textContent = 'disconnected'; $('#liveBadge').hide(); });

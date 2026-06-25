@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -924,8 +925,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.conf import settings
 
-CENTRIFUGO_SECRET = 'aru-community-secret-key-change-in-production'
-CENTRIFUGO_URL = 'http://localhost:8001'
+CENTRIFUGO_SECRET = os.getenv('CENTRIFUGO_TOKEN_HMAC_SECRET', 'aru-community-secret-key-change-in-production')
+CENTRIFUGO_URL = os.getenv('CENTRIFUGO_URL', 'http://localhost:8001')
+CENTRIFUGO_WS_URL = os.getenv('CENTRIFUGO_WS_URL', 'ws://localhost:8001/connection/websocket')
 
 
 def get_centrifugo_token(user, channel):
@@ -976,6 +978,7 @@ def chat_token(request, event_id):
         'token': token,
         'client': str(request.user.id),
         'channel': channel,
+        'ws_url': CENTRIFUGO_WS_URL,
     })
 
 
