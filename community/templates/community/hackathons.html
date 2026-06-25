@@ -1,0 +1,35 @@
+{% extends 'community/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+            <h2 class="mt-2">Hackathons</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <p class="lead mb-4">Our hackathons provide an exciting platform for members to collaborate, compete, and develop creative solutions to real-world challenges.</p>
+
+                <h4 class="mt-5 mb-3">Why Participate</h4>
+                <ul>
+                    <li><strong>Build Real Projects</strong> - Turn your ideas into working prototypes in a fast-paced environment.</li>
+                    <li><strong>Team Collaboration</strong> - Work with talented developers, designers, and problem-solvers.</li>
+                    <li><strong>Learn Fast</strong> - Hackathons are the best way to learn new technologies under pressure.</li>
+                    <li><strong>Win Prizes</strong> - Top teams receive recognition, prizes, and opportunities to showcase their work.</li>
+                </ul>
+
+                <h4 class="mt-5 mb-3">How It Works</h4>
+                <p>Teams of 3-5 participants are formed at the start of the event. You will have 24-48 hours to build a solution based on a theme or challenge. Mentors are available throughout to provide guidance and support. At the end, teams present their projects to a panel of judges.</p>
+
+                <h4 class="mt-5 mb-3">Who Can Join</h4>
+                <p>Anyone with a passion for building things! You don't need to be an expert programmer. Designers, project managers, and idea people are all welcome. We provide the resources, you bring the creativity.</p>
+
+                <div class="text-center mt-5">
+                    <a href="{% url 'event_list' %}" class="btn btn-primary px-4 py-2">View Upcoming Hackathons</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

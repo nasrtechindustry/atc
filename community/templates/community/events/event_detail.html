@@ -1,0 +1,409 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item"><a href="{% url 'event_list' %}">Events</a></li>
+<li class="breadcrumb-item active">{{ event.title }}</li>
+</ol>{% endblock %}
+
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <!-- Image -->
+        {% if event.image %}
+        <div class="rounded-4 overflow-hidden shadow-sm mb-4" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#eventImageModal">
+            <img src="{{ event.image.url }}" class="w-100" alt="{{ event.title }}" style="height: 360px; object-fit: cover;">
+        </div>
+        {% endif %}
+
+        <!-- Header -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="badge bg-info fs-6 px-3 py-1">{{ event.get_category_display }}</span>
+            <span class="badge bg-{% if event.status_label == 'upcoming' %}primary{% elif event.status_label == 'ongoing' %}success{% elif event.status_label == 'completed' %}secondary{% elif event.status_label == 'cancelled' %}danger{% else %}warning{% endif %} fs-6 px-3 py-1">{{ event.status_label|title }}</span>
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <span class="text-muted small">Share:</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Facebook" class="text-primary" style="line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/></svg></a>
+                <a href="https://twitter.com/intent/tweet?text={{ event.title }}&url={{ request.build_absolute_uri }}" target="_blank" title="Twitter/X" style="line-height:0;color:#000;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633z"/></svg></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ event.title }}" target="_blank" title="LinkedIn" class="text-primary" style="line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+                <a href="https://api.whatsapp.com/send?text={{ event.title }}%20-%20{{ request.build_absolute_uri }}" target="_blank" title="WhatsApp" class="text-success" style="line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.878.47.177.84.283 1.126.36.474.13.904.112 1.245.068.38-.05 1.17-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg></a>
+            </div>
+        </div>
+
+        <!-- Title & Description -->
+        <h2 class="mb-3">{{ event.title }}</h2>
+        <p class="text-muted">{{ event.description|linebreaks }}</p>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2 flex-wrap mb-4">
+            {% if is_registered %}
+            <form method="post" action="{% url 'event_cancel_registration' event.id %}">{% csrf_token %}<button type="submit" class="btn btn-danger" onclick="return confirm('Cancel registration?');"><i class="bi bi-x-circle me-1"></i>Cancel Registration</button></form>
+            {% elif event.status_label == 'upcoming' or event.status_label == 'ongoing' %}
+            <form method="post" action="{% url 'event_register' event.id %}">{% csrf_token %}<button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i>Register for Event</button></form>
+            {% endif %}
+            {% if event.status_label == 'completed' and has_attended %}
+            <a href="{% url 'submit_feedback' event.id %}" class="btn btn-outline-warning"><i class="bi bi-star me-1"></i>Leave Feedback</a>
+            {% endif %}
+            {% if user.is_staff %}
+            <a href="{% url 'event_edit' event.id %}" class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Edit</a>
+            <a href="{% url 'event_registrations' event.id %}" class="btn btn-outline-info"><i class="bi bi-people me-1"></i>Registrations</a>
+            {% endif %}
+        </div>
+
+        <!-- Agenda (shown on main column for priority) -->
+        {% if event.agenda_items.all %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center"><i class="bi bi-list-check text-primary me-2"></i>Agenda</div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for item in event.agenda_items.all %}
+                    <div class="list-group-item d-flex align-items-center gap-3 py-3">
+                        <div class="text-center flex-shrink-0" style="width:60px;">
+                            <small class="text-muted d-block" style="font-size:11px;line-height:1.2;">{{ item.start_time|time:"H:i" }}</small>
+                            <small class="text-muted d-block" style="font-size:11px;line-height:1.2;">{{ item.end_time|time:"H:i" }}</small>
+                        </div>
+                        <div class="flex-grow-1">
+                            <strong>{{ item.title }}</strong>
+                            {% if item.speaker %}<br><small class="text-muted">by {{ item.speaker.name }}</small>{% endif %}
+                            {% if item.description %}<p class="mb-0 mt-1 small text-muted">{{ item.description }}</p>{% endif %}
+                        </div>
+                        <div class="d-flex gap-1 flex-shrink-0">
+                            {% if item.resource_file %}
+                            <a href="{{ item.resource_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary" style="width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;" title="Download Resource"><i class="bi bi-download"></i></a>
+                            {% endif %}
+                            {% if item.resource_url %}
+                            <a href="{{ item.resource_url }}" target="_blank" class="btn btn-sm btn-outline-secondary" style="width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;" title="Open Resource Link"><i class="bi bi-box-arrow-up-right"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Event Timeline -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body py-3">
+                <div class="position-relative" style="padding-left: 28px;">
+                    <div class="position-absolute top-0 bottom-0" style="left: 10px; width: 2px; background: var(--primary); opacity: .15;"></div>
+
+                    <div class="position-relative mb-3" style="padding-left: 0;">
+                        <div class="position-absolute rounded-circle border border-2 border-primary bg-white" style="width: 14px; height: 14px; left: -22px; top: 4px;"></div>
+                        <small class="text-muted d-block" style="font-size:11px;line-height:1;">Start</small>
+                        <strong style="font-size:14px;">{{ event.start_date|date:"M d, Y" }}</strong>
+                        <span class="text-muted ms-1" style="font-size:13px;">{{ event.start_date|date:"H:i" }}</span>
+                    </div>
+
+                    <div class="position-relative mb-3" style="padding-left: 0;">
+                        <div class="position-absolute rounded-circle border border-2 border-primary bg-white" style="width: 14px; height: 14px; left: -22px; top: 4px;"></div>
+                        <small class="text-muted d-block" style="font-size:11px;line-height:1;">End</small>
+                        <strong style="font-size:14px;">{{ event.end_date|date:"M d, Y" }}</strong>
+                        <span class="text-muted ms-1" style="font-size:13px;">{{ event.end_date|date:"H:i" }}</span>
+                    </div>
+
+                    {% if event.location %}
+                    <div class="position-relative mb-3" style="padding-left: 0;">
+                        <div class="position-absolute rounded-circle bg-primary opacity-50" style="width: 8px; height: 8px; left: -19px; top: 7px; border-radius: 50%;"></div>
+                        <small class="text-muted d-block" style="font-size:11px;line-height:1;">Location</small>
+                        <strong style="font-size:14px;">{{ event.location }}</strong>
+                    </div>
+                    {% endif %}
+
+                    <div class="position-relative" style="padding-left: 0;">
+                        <div class="position-absolute rounded-circle bg-primary opacity-50" style="width: 8px; height: 8px; left: -19px; top: 7px; border-radius: 50%;"></div>
+                        <small class="text-muted d-block" style="font-size:11px;line-height:1;">Capacity</small>
+                        <strong style="font-size:14px;">{{ event.registration_count }}{% if event.capacity %} / {{ event.capacity }}{% else %} Unlimited{% endif %}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Venue & Details -->
+        {% if event.venue_details or event.has_food or event.has_payment or event.components %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center"><i class="bi bi-info-circle text-primary me-2"></i>Event Details</div>
+            <div class="card-body">
+                {% if event.venue_details %}
+                <div class="d-flex gap-3 mb-3">
+                    <div class="flex-shrink-0 text-primary"><i class="bi bi-geo-alt-fs-5"></i></div>
+                    <div><small class="text-muted d-block">Venue Details</small>{{ event.venue_details|linebreaks }}</div>
+                </div>
+                {% endif %}
+                {% if event.has_food or event.has_payment %}
+                <div class="d-flex gap-2 flex-wrap">
+                    {% if event.has_food %}
+                    <span class="badge bg-success px-3 py-2 text-white"><i class="bi bi-cup-hot me-1"></i>{% if event.food_details %}{{ event.food_details }}{% else %}Food Provided{% endif %}</span>
+                    {% endif %}
+                    {% if event.has_payment %}
+                    <span class="badge bg-warning px-3 py-2 text-dark"><i class="bi bi-credit-card me-1"></i>{% if event.payment_details %}{{ event.payment_details }}{% else %}Paid Event{% endif %}</span>
+                    {% else %}
+                    <span class="badge bg-success px-3 py-2 text-white"><i class="bi bi-check-circle me-1"></i>Free Entry</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% if event.components %}
+                <hr class="my-3">
+                <small class="text-muted d-block mb-2 fw-medium">What's Included:</small>
+                <ul class="mb-0 small">
+                    {% for item in event.components.splitlines %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Speakers -->
+        {% if event.speakers.all %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center"><i class="bi bi-people text-primary me-2"></i>Speakers</div>
+            <div class="card-body">
+                {% for speaker in event.speakers.all %}
+                <div class="d-flex align-items-center gap-3 mb-3 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center flex-shrink-0 overflow-hidden" style="width:48px;height:48px;">
+                        {% if speaker.photo %}<img src="{{ speaker.photo.url }}" width="48" height="48" style="object-fit:cover;">{% else %}<i class="bi bi-person text-muted fs-5"></i>{% endif %}
+                    </div>
+                    <div class="flex-grow-1"><h6 class="mb-0">{{ speaker.name }}</h6><small class="text-muted">{{ speaker.bio|truncatewords:12 }}</small></div>
+                    {% if speaker.phone %}
+                    <div class="d-flex gap-1 flex-shrink-0">
+                        <a href="tel:{{ speaker.phone }}" class="btn btn-sm btn-outline-success" style="width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;" title="Call"><i class="bi bi-telephone"></i></a>
+                        <a href="sms:{{ speaker.phone }}" class="btn btn-sm btn-outline-primary" style="width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;" title="Text"><i class="bi bi-chat-dots"></i></a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Materials -->
+        {% if event.materials.all %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center"><i class="bi bi-paperclip text-primary me-2"></i>Materials</div>
+            <div class="card-body">
+                {% for material in event.materials.all %}
+                <a href="{% if material.file %}{{ material.file.url }}{% else %}{{ material.url }}{% endif %}" target="_blank" class="btn btn-outline-secondary btn-sm me-2 mb-2"><i class="bi bi-download me-1"></i>{{ material.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <!-- Event Chat -->
+        {% if user.is_authenticated and is_registered %}
+        <div class="card border-0 shadow-sm mb-4" id="eventChat" style="border-radius:16px;">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center justify-content-between py-3" style="border-radius:16px 16px 0 0;">
+                <div><i class="bi bi-chat-dots text-primary me-2"></i>Event Chat <span class="badge bg-success ms-1" id="liveBadge" style="display:none;"><span class="rounded-circle bg-white d-inline-block me-1" style="width:6px;height:6px;"></span>Live</span></div>
+                <div class="d-flex align-items-center gap-2">
+                    <small class="text-muted" id="chatStatus">connecting...</small>
+                    <a href="{% url 'event_chat' event.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3" target="_blank"><i class="bi bi-box-arrow-up-right me-1"></i>Open Chat</a>
+                </div>
+            </div>
+            <div class="card-body p-0 d-flex flex-column" style="height:400px;overflow:hidden;">
+                <div class="flex-grow-1 overflow-auto p-3" id="chatMessages" style="background:#f8f9fa;min-height:0;"></div>
+                <div class="border-top p-3 bg-white">
+                    <div class="d-flex gap-2 align-items-center">
+                        <label class="btn btn-sm btn-outline-secondary mb-0" style="cursor:pointer;" title="Send image/video">
+                            <i class="bi bi-image"></i><input type="file" id="chatImageInput" accept="image/*" style="display:none;">
+                        </label>
+                        <label class="btn btn-sm btn-outline-secondary mb-0" style="cursor:pointer;" title="Send file">
+                            <i class="bi bi-paperclip"></i><input type="file" id="chatFileInput" style="display:none;">
+                        </label>
+                        <label class="btn btn-sm btn-outline-secondary mb-0" style="cursor:pointer;" title="Voice recording">
+                            <i class="bi bi-mic"></i><input type="file" id="chatVoiceInput" accept="audio/*" style="display:none;">
+                        </label>
+                        <div class="flex-grow-1 position-relative">
+                            <input type="text" id="chatInput" class="form-control form-control-sm rounded-pill" placeholder="Type a message..." style="padding-right:40px;">
+                            <span id="chatFileName" class="position-absolute small text-muted" style="right:10px;top:50%;transform:translateY(-50%);"></span>
+                        </div>
+                        <button class="btn btn-primary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" id="chatSendBtn" style="width:38px;height:38px;padding:0;"><i class="bi bi-send"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/centrifuge@5/dist/centrifuge.js"></script>
+        <script>
+        $(document).ready(function() {
+            if (typeof Centrifuge === 'undefined') { $('#chatStatus').text('SDK loading failed'); return; }
+            var eventId = {{ event.id }};
+            var chatMessages = document.getElementById('chatMessages');
+            var chatInput = document.getElementById('chatInput');
+            var chatSendBtn = document.getElementById('chatSendBtn');
+            var chatStatus = document.getElementById('chatStatus');
+            var chatImageInput = document.getElementById('chatImageInput');
+            var chatFileInput = document.getElementById('chatFileInput');
+            var chatVoiceInput = document.getElementById('chatVoiceInput');
+            var typingTimers = {};
+            var typingUsers = [];
+
+            function getTypingMsg() {
+                var online = typingUsers.filter(function(u) { return u !== '{{ user.username }}'; });
+                if (online.length === 0) return '';
+                if (online.length === 1) return online[0] + ' is typing...';
+                if (online.length === 2) return online[0] + ' and ' + online[1] + ' are typing...';
+                return online[0] + ' and ' + (online.length - 1) + ' others are typing...';
+            }
+
+            function updateTypingIndicator() {
+                var existing = document.getElementById('typingIndicator');
+                if (existing) existing.remove();
+                var msg = getTypingMsg();
+                if (!msg) return;
+                var div = document.createElement('div');
+                div.id = 'typingIndicator';
+                div.className = 'text-muted small px-3 py-1';
+                div.textContent = msg;
+                chatMessages.parentElement.insertBefore(div, chatMessages.nextSibling);
+            }
+
+            function addMessage(msg, prepend) {
+                if (document.getElementById('chat-msg-' + msg.id)) return;
+                msg.is_owner = (msg.is_owner === true || msg.user_id === {{ user.id }});
+                var div = document.createElement('div');
+                div.id = 'chat-msg-' + msg.id;
+                div.className = 'd-flex ' + (msg.is_owner ? 'justify-content-end' : 'justify-content-start') + ' mb-3';
+                var maxW = msg.image ? '300px' : '75%';
+                var bg = msg.is_owner ? 'bg-primary text-white' : 'bg-white';
+                div.innerHTML = '<div class="rounded-3 px-3 py-2 shadow-sm ' + bg + '" style="max-width:' + maxW + ';">' +
+                    (msg.is_owner ? '' : '<small class="fw-bold d-block" style="font-size:11px;">' + msg.user + '</small>') +
+                    (msg.image ? '<img src="' + msg.image + '" class="img-fluid rounded mb-1" style="max-height:200px;cursor:pointer;" onclick="window.open(this.src)"><br>' : '') +
+                    (msg.file ? '<a href="' + msg.file + '" target="_blank" class="btn btn-sm btn-outline-secondary mb-1"><i class="bi bi-paperclip"></i> ' + (msg.file_name || 'File') + '</a><br>' : '') +
+                    (msg.voice ? '<audio controls class="w-100 mb-1" style="height:36px;"><source src="' + msg.voice + '"></audio><br>' : '') +
+                    (msg.message ? '<span class="small">' + msg.message.replace(/</g,'&lt;') + '</span>' : '') +
+                    '<div class="d-flex justify-content-between align-items-center mt-1">' +
+                    '<small class="opacity-50" style="font-size:10px;">' + new Date(msg.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) + '</small>' +
+                    (msg.is_owner ? '<span class="small opacity-50" style="font-size:9px;" title="Sent"><i class="bi bi-check"></i></span><span class="small opacity-50" style="font-size:9px;display:none;" id="deliv-' + msg.id + '"><i class="bi bi-check-all"></i></span><button class="btn btn-sm p-0 text-white-50" onclick="deleteChat(' + msg.id + ')" style="font-size:10px;"><i class="bi bi-trash"></i></button>' : '<span class="small opacity-50" style="font-size:9px;" title="Delivered"><i class="bi bi-check-all"></i></span>') +
+                    '</div></div>';
+                if (prepend) { chatMessages.prepend(div); }
+                else { chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+            }
+
+            window.deleteChat = function(msgId) {
+                confirmAction('Delete this message?', function() {
+                    fetch('/chat/delete/' + msgId + '/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                        .then(function(r) { return r.json(); })
+                        .then(function(d) { if(d.ok) {
+                            var el = document.getElementById('chat-msg-' + msgId);
+                            if (el) el.innerHTML = '<div class="text-muted small fst-italic px-3 py-2">This message was deleted</div>';
+                            showToast('This message was deleted', 'success');
+                        }});
+                });
+            };
+
+            // Load existing messages
+            fetch('/chat/' + eventId + '/messages/')
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    chatStatus.textContent = d.messages.length + ' messages';
+                    d.messages.forEach(function(m) { addMessage(m); });
+                });
+
+            // Connect to Centrifugo
+            fetch('/chat/' + eventId + '/token/')
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    var centrifuge = new Centrifuge('ws://localhost:8001/connection/websocket', {
+                        token: d.token,
+                    });
+                    centrifuge.on('connecting', function() { chatStatus.textContent = 'connecting...'; $('#liveBadge').hide(); });
+                    centrifuge.on('connected', function() { chatStatus.textContent = ''; $('#liveBadge').show(); });
+                    centrifuge.on('disconnected', function() { chatStatus.textContent = 'disconnected'; $('#liveBadge').hide(); });
+
+                    var sub = centrifuge.newSubscription(d.channel);
+                    sub.on('publication', function(ctx) {
+                        if (ctx.data.type === 'typing') {
+                            var username = ctx.data.user;
+                            var userId = ctx.data.user_id;
+                            if (typingUsers.indexOf(username) === -1) {
+                                typingUsers.push(username);
+                            }
+                            clearTimeout(typingTimers[userId]);
+                            typingTimers[userId] = setTimeout(function() {
+                                typingUsers = typingUsers.filter(function(u) { return u !== username; });
+                                updateTypingIndicator();
+                            }, 2500);
+                            updateTypingIndicator();
+                        } else if (ctx.data.type === 'delete') {
+                            var el = document.getElementById('chat-msg-' + ctx.data.id);
+                            if (el) { el.innerHTML = '<div class="text-muted small fst-italic px-3 py-2">This message was deleted</div>'; }
+                        } else {
+                            addMessage(ctx.data);
+                        }
+                    });
+                    sub.subscribe();
+                    centrifuge.connect();
+
+                    window.centrifugePub = function(data) {
+                        var form = new FormData();
+                        form.append('message', data.message || '');
+                        if (data.image) form.append('image', data.image);
+                        if (data.file) form.append('file', data.file);
+                        if (data.voice) form.append('voice', data.voice);
+                        fetch('/chat/' + eventId + '/messages/', { method: 'POST', body: form, headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                            .then(function(r) { return r.json(); })
+                            .then(function(msg) { if(msg.id) { addMessage(msg); var d = document.getElementById('deliv-' + msg.id); if (d) d.style.display = 'inline'; } });
+                    };
+
+                    window.centrifugeSub = sub;
+                });
+
+            // Typing indicator
+            var typingTimeout;
+            chatInput.addEventListener('input', function() {
+                if (!this.value.trim()) return;
+                clearTimeout(typingTimeout);
+                fetch('/chat/' + eventId + '/typing/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } });
+                typingTimeout = setTimeout(function() {}, 3000);
+            });
+
+            // Send message
+            function sendNow() {
+                var text = chatInput.value.trim();
+                var img = chatImageInput.files[0];
+                var file = chatFileInput.files[0];
+                var voice = chatVoiceInput.files[0];
+                if (!text && !img && !file && !voice) return;
+                var data = { message: text };
+                if (img) data.image = img;
+                if (file) data.file = file;
+                if (voice) data.voice = voice;
+                if (window.centrifugePub) window.centrifugePub(data);
+                chatInput.value = '';
+                chatImageInput.value = '';
+                chatFileInput.value = '';
+                chatVoiceInput.value = '';
+                document.getElementById('chatFileName').textContent = '';
+            }
+
+            chatSendBtn.addEventListener('click', sendNow);
+            chatInput.addEventListener('keydown', function(e) { if(e.key === 'Enter') sendNow(); });
+            chatImageInput.addEventListener('change', function() { sendNow(); });
+            chatFileInput.addEventListener('change', function() {
+                document.getElementById('chatFileName').textContent = this.files[0] ? this.files[0].name : '';
+            });
+            chatVoiceInput.addEventListener('change', function() { sendNow(); });
+        });
+        </script>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Image Modal -->
+{% if event.image %}
+<div class="modal fade" id="eventImageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 bg-transparent">
+            <div class="modal-body p-0 text-center">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" style="z-index:10;"></button>
+                <img src="{{ event.image.url }}" class="img-fluid rounded-3 shadow" alt="{{ event.title }}" style="max-height:90vh;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock dashboard_content %}

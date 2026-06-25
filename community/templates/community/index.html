@@ -1,0 +1,434 @@
+{% extends 'community/base.html' %}
+
+{% block content %}
+{% load static %}
+
+  <div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+      <div class="row g-5 py-5">
+        <div class="col-lg-8">
+          <h1 class="display-1 text-white pb-8 animated zoomIn">Aru Tech Community.</h1>
+          <h2 class="h6 mt-4 text-white animated zoomIn">
+            Step into a vibrant community where Developers, creative minds, and tech enthusiasists unite. </br>
+            Whether you're an experienced coder or just beginning your journey, you'll find a welcoming space to learn, grow.
+          </h2></div>
+        <div class="col-lg-4 text-center text-lg-start">
+          <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="img-fluid rounded" src="{% static 'img/P4061665.JPG' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1949.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1939.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1921.jpg' %}" alt="" />
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid rounded" src="{% static 'img/JTM_1922.jpg' %}" alt="" />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev"><span class="fa fa-chevron-left text-white"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next"><span class="fa fa-chevron-right text-white"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Search Start -->
+  <div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
+        <div class="modal-header border-0">
+          <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <div class="input-group" style="max-width: 600px;">
+            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword" />
+            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Search End -->
+
+  <!-- About Start -->
+  <div class="container-xxl py-5">
+    <div class="container px-lg-5">
+      <div class="row g-5">
+        <div class="col-lg-6 text-center text-lg-start">
+          <h1 class="text-black mb-4 animated zoomIn">Join the Aru Tech Community Today!</h1>
+          <p class="text-black pb-3 animated zoomIn">
+            We're thrilled to have you join our vibrant Aru Tech Community! This is your gateway to explore the endless possibilities of technology, from building powerful applications to solving real-world challenges.
+          </p>
+          <a href="https://www.youtube.com" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="col-lg-6 text-center text-lg-start">
+          <h1 class="text-black pb-3 animated zoomIn">Join the Django Girls Ardhi Chapter</h1>
+            <p class="text-black pb-3 animated zoomIn">
+              We're thrilled to have you join our vibrant Django Girls Community! This is your gateway to explore the endless possibilities of Django, from building powerful website applications to solve real-world challenges.
+            </p>
+            <a href="https://www.youtube.com" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- About End -->
+
+  <!-- Sponsors Start -->
+  <div class="container-xxl py-5">
+    <div class="container px-lg-5">
+      <div class="row g-5 text-center">
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/logo.jpg' %}" alt="" class="img-fluid mb-3" />
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/pycon-black.jpg' %}" alt="Sponsor 2" class="img-fluid mb-3" />
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/djnew.png' %}" alt="Sponsor 3" class="img-fluid mb-3" />
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/brand-shield (1).png' %}" alt="Sponsor 4" class="img-fluid mb-3" />
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/logo_B.png' %}" alt="Sponsor 5" class="img-fluid mb-3" />
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+          <img src="{% static 'img/logo.png' %}" alt="Sponsor 6" class="img-fluid mb-3" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sponsors End -->
+
+  <!-- expect chapter -->
+  <section class="cards">
+    <div class="container-xxl py-5">
+      <div class="container px-lg-5">
+        <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+          <!-- h6 class="position-relative d-inline text-primary ps-4">About Us</h6 -->
+          <h2 class="mt-2">What should you expect from the Community.</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Workshops</h5>
+              <p>Participants explore topics like Python programming, artificial intelligence, web development, and networking, guided by experts and peers.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'event_list' %}">Read More</a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Events</h5>
+              <p>Bring the community together, featuring guest speakers, panel discussions, and opportunities to learn about the latest advancements in technology.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'event_list' %}">Read More</a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.6s">
+            <div class="service-item d-flex flex-column justify-content-center text-center rounded">
+              <div class="service-icon flex-shrink-0">
+                <i class="fa fa-home fa-2x"></i>
+              </div>
+              <h5 class="mb-3">Hackathons</h5>
+              <p>Provide an exciting platform for members to collaborate, compete, and develop creative solutions to real-world challenges.</p>
+              <a class="btn px-3 mt-auto mx-auto" href="{% url 'event_list' %}">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- expect chapter end -->
+
+  <!-- Inspiration Page -->
+  <!--   section class="intro bg-light rounded p-5" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="'container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <img src="img/workshop1.jpg" alt="Intro Image" class="img-fluid rounder" style="border-radius: 15px;">
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Inspiring learners to fall in love with programming!</h1>
+                        <p>Aru Tech Community and Django Girls organizes free Python and Django workshops, creates open-source tutorials and curates amazing first experience with technology.</p>            
+                    </div>
+                </div>
+            </div>
+        </section>
+        Inspiration Page End   -->
+
+  <!-- Past Events, Talks, and Workshops Start -->
+  <div class="container-xxl py-5 bg-light">
+    <div class="container px-lg-5">
+      <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+        <h2 class="mt-2">Past Events, Talks, and Workshops</h2>
+      </div>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/workshop1.jpg' %}" alt="Workshop 1" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/workshop2.jpg' %}" alt="Workshop 2" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/WhatsApp Image 2025-01-16 at 13.33.08_c4a1a5a7.jpg' %}" alt="Workshop 3" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/P4061580.JPG' %}" alt="Workshop 4" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/P4061597.JPG' %}" alt="Workshop 5" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="swiper-slide-inner">
+              <img src="{% static 'img/P4061681.JPG' %}" alt="Workshop 6" />
+              <div class="swiper-slide-overlay">
+                <span>Workshop</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Past Events, Talks, and Workshops End -->
+
+  <!-- Initialize Swiper -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      coverflowEffect: {
+        rotate: 30,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    })
+  </script>
+  <!-- Past Events, Talks, and Workshops End -->
+
+  <!-- Testimonial Start -->
+  <div class="container-xxl bg-primary testimonial py-5 my-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+      <div class="owl-carousel testimonial-carousel">
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>Joining Aru Tech Community has been a transformative experience. The workshops and events have significantly improved my Python skills and connected me with a supportive community.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/enoshi.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Godfrey Enoshi</h6>
+              <small>AI/ML Engineer</small>
+              <small>Sartfy</small>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>The Django Girls workshops have been incredibly empowering. I've learned so much about web development and met amazing people who share my passion for coding.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/agatha.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Agath Mkeng'e</h6>
+              <small>Project Manager</small>
+              <small>IPF technology</small>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-item bg-transparent border rounded text-white p-4">
+          <i class="fa fa-quote-left fa-2x mb-3"></i>
+          <p>Aru Tech Community has provided me with invaluable networking opportunities. The hackathons and events have helped me grow both personally and professionally.</p>
+          <div class="d-flex align-items-center">
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="{% static 'img/rajabu.jpg' %}" style="width: 50px; height: 50px;" />
+            <div class="ps-3">
+              <h6 class="text-white mb-1">Rajabu Rajabu</h6>
+              <small>Software Developer</small>
+              <small>Tera tech</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Testimonial End -->
+
+  <!-- Team Start -->
+  <div class="container-xxl py-5">
+    <div class="container px-lg-5">
+      <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+        <h6 class="position-relative d-inline text-primary ps-4">Our Team</h6>
+        <h2 class="mt-2">Meet Our Team Members</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/IMG_20230512_203455_667.jpg' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">VeryniceGlory Lazaro</h5>
+              <small>Chapter Lead</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/innocenct-removebg.png' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">Innocent Kiwoly</h5>
+              <small>Executive Chapter Lead</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+          <div class="team-item">
+            <div class="d-flex">
+              <div class="flex-shrink-0 d-flex flex-column align-items-center mt-4 pt-5" style="width: 75px;">
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square text-primary bg-white my-1" href=""><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <img class="img-fluid rounded w-100" src="{% static 'img/WhatsApp Image 2025-02-28 at 22.15.25_d0d32b6a.jpg' %}" alt="" />
+            </div>
+            <div class="px-4 py-3">
+              <h5 class="fw-bold m-0">Goodluck Moshi</h5>
+              <small>Project Manager</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Team End -->
+
+  <!-- Statistic start -->
+  <div class="container-xxl py-5 bg-light" id="counter">
+    <div class="container px-lg-5">
+      <div class="row g-5 text-center">
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4 text-white"><span id="alumniCount">187</span>+</h2>
+            <p class="mb-0 text-white-50">Alumni Members</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4 text-white"><span id="studentCount">87</span>+</h2>
+            <p class="mb-0 text-white-50">Student Members</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-primary text-white rounded p-4">
+            <h2 class="display-4 text-white"><span id="facilitatorCount">5</span>+</h2>
+            <p class="mb-0 text-white-50">Facilitators</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- include CountUp.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.7/countUp.min.js"></script>
+
+  <!-- Initialize CountUp with IntersectionObserver -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var counterSection = document.getElementById('counter')
+      var started = false
+
+      function startCounters() {
+        if (started) return
+        started = true
+
+        var alumniCount = new CountUp('alumniCount', 140)
+        var studentCount = new CountUp('studentCount', 30)
+        var facilitatorCount = new CountUp('facilitatorCount', 5)
+
+        if (!alumniCount.error) alumniCount.start()
+        if (!studentCount.error) studentCount.start()
+        if (!facilitatorCount.error) facilitatorCount.start()
+      }
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              startCounters()
+              observer.unobserve(entry.target)
+            }
+          })
+        }, { threshold: 0.3 })
+        observer.observe(counterSection)
+      } else {
+        startCounters()
+      }
+    })
+  </script>
+  <!-- Statistic End -->
+{% endblock %}

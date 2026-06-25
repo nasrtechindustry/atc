@@ -1,0 +1,60 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">Certificates</li>
+</ol>{% endblock %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">{% if user.is_staff %}All Certificates{% else %}My Certificates{% endif %}</h2>
+      {% if user.is_staff %}
+        <a href="{% url 'certificate_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Issue Certificate</a>
+      {% endif %}
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+      {% endfor %}
+    {% endif %}
+    {% if certificates %}
+      <div class="card shadow-sm">
+        <div class="card-body p-3">
+          <div class="table-responsive">
+            <table class="data-table table table-striped table-hover" class="table table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>Certificate ID</th>
+                  <th>Event</th>
+                  <th>User</th>
+                  <th>Issued At</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cert in certificates %}
+                  <tr>
+                    <td><code>{{ cert.certificate_id }}</code></td>
+                    <td>{{ cert.event.title }}</td>
+                    <td>{{ cert.user.username }}</td>
+                    <td>{{ cert.issued_at|date:"M d, Y" }}</td>
+                    <td>{% if cert.is_revoked %}<span class="badge bg-danger">Revoked</span>{% else %}<span class="badge bg-success">Valid</span>{% endif %}</td>
+                    <td>
+                      <a href="{% url 'certificate_detail' cert.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                      {% if user.is_staff and not cert.is_revoked %}
+                        <form method="post" action="{% url 'certificate_list' cert.certificate_id %}" class="d-inline" onsubmit="return confirm('Revoke this certificate?');">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Revoke</button>
+                        </form>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center py-5"><p class="text-muted">No certificates found.</p></div>
+    {% endif %}
+{% endblock dashboard_content %}

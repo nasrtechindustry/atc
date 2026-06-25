@@ -1,0 +1,50 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Contact Inquiries{% endblock %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="mb-0 fw-bold"><i class="bi bi-envelope text-primary me-2"></i>Contact Inquiries</h5>
+    <div class="d-flex gap-2">
+        <a href="?status=" class="btn btn-sm btn-outline-secondary rounded-pill {% if not status_filter %}active{% endif %}">All</a>
+        <a href="?status=unread" class="btn btn-sm btn-outline-secondary rounded-pill {% if status_filter == 'unread' %}active{% endif %}">Unread</a>
+        <a href="?status=read" class="btn btn-sm btn-outline-secondary rounded-pill {% if status_filter == 'read' %}active{% endif %}">Read</a>
+        <a href="?status=responded" class="btn btn-sm btn-outline-secondary rounded-pill {% if status_filter == 'responded' %}active{% endif %}">Responded</a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead class="table-light"><tr><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for inquiry in inquiries %}
+                    <tr class="{% if inquiry.status == 'unread' %}fw-medium{% endif %}">
+                        <td>{{ inquiry.name }}</td>
+                        <td><a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a></td>
+                        <td class="text-truncate" style="max-width:200px;">{{ inquiry.subject }}</td>
+                        <td>
+                            <span class="badge bg-{% if inquiry.status == 'unread' %}danger{% elif inquiry.status == 'read' %}warning{% else %}success{% endif %} bg-opacity-10 text-{% if inquiry.status == 'unread' %}danger{% elif inquiry.status == 'read' %}warning{% else %}success{% endif %} px-3 py-1 rounded-pill">
+                                {{ inquiry.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="text-muted small">{{ inquiry.created_at|date:"M d, Y H:i" }}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'admin_inquiry_mark' inquiry.id %}?action=read" class="btn btn-sm btn-outline-info" title="Mark as read"><i class="bi bi-check2"></i></a>
+                                <a href="{% url 'admin_inquiry_mark' inquiry.id %}?action=responded" class="btn btn-sm btn-outline-success" title="Mark as responded"><i class="bi bi-check2-all"></i></a>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="showModal('{{ inquiry.subject|escapejs }}', '<strong>From:</strong> {{ inquiry.name|escapejs }} &lt;{{ inquiry.email }}&gt;<br><br>{{ inquiry.message|linebreaksbr }}')" title="View"><i class="bi bi-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted py-4">No inquiries yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

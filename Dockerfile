@@ -1,38 +1,22 @@
-# Use Python 3.11 slim image
-FROM python:3.11-slim
+FROM python:3.9-slim
 
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=community.settings
+ENV DJANGO_SETTINGS_MODULE=config.settings
 
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        postgresql-client \
-        build-essential \
-        libpq-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-client libpq-dev build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt /app/
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
-COPY . /app/
+COPY . .
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput || true
 
-# Create a non-root user
-RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
-USER appuser
+EXPOSE 8000
 
-# Expose port
-EXPOSE 3000
-
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:3000", "--workers", "3", "community.wsgi:application"]
+CMD gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3

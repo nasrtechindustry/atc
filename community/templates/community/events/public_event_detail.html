@@ -1,0 +1,53 @@
+{% extends 'community/base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} - Aru Tech Community{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <div class="row g-5">
+            <div class="col-lg-8">
+                {% if event.image %}<img src="{{ event.image.url }}" class="img-fluid rounded mb-4" alt="{{ event.title }}" onerror="this.style.display='none';">{% endif %}
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-primary fs-6 px-3 py-1">{{ event.get_category_display }}</span>
+                    <span class="badge bg-{% if event.status_label == 'upcoming' %}success{% elif event.status_label == 'ongoing' %}primary{% else %}secondary{% endif %} fs-6 px-3 py-1">{{ event.status_label|title }}</span>
+                </div>
+                <h2>{{ event.title }}</h2>
+                <p class="text-muted">{{ event.description|linebreaks }}</p>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6"><i class="bi bi-calendar me-2"></i><strong>Start:</strong> {{ event.start_date|date:"M d, Y H:i" }}</div>
+                    <div class="col-sm-6"><i class="bi bi-calendar-check me-2"></i><strong>End:</strong> {{ event.end_date|date:"M d, Y H:i" }}</div>
+                    {% if event.location %}<div class="col-sm-6"><i class="bi bi-geo-alt me-2"></i><strong>Location:</strong> {{ event.location }}</div>{% endif %}
+                    <div class="col-sm-6"><i class="bi bi-people me-2"></i><strong>Capacity:</strong> {{ event.registration_count }}{% if event.capacity %} / {{ event.capacity %}{% else %} (Unlimited){% endif %}</div>
+                </div>
+                <a href="{% url 'login' %}?next={% url 'event_detail' event.id %}" class="btn btn-primary">Login to Register</a>
+            </div>
+            <div class="col-lg-4">
+                {% if event.speakers.all %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white"><h5 class="mb-0">Speakers</h5></div>
+                    <div class="card-body">
+                        {% for speaker in event.speakers.all %}
+                        <div class="mb-2"><strong>{{ speaker.name }}</strong><br><small class="text-muted">{{ speaker.bio|truncatewords:12 }}</small></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if event.agenda_items.all %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white"><h5 class="mb-0">Agenda</h5></div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for item in event.agenda_items.all %}
+                            <li class="list-group-item d-flex justify-content-between"><span>{{ item.title }}</span><small class="text-muted">{{ item.start_time|time:"H:i" }} - {{ item.end_time|time:"H:i" }}</small></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

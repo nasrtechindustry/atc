@@ -1,0 +1,53 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h2 class="mb-4">{% if form.instance.pk %}Edit Project{% else %}Submit Project{% endif %}</h2>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+          {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}<p>{{ error }}</p>{% endfor %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light shadow">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_title" class="form-label">Project Title</label>
+            <input type="text" name="title" id="id_title" class="form-control" value="{{ form.title.value|default:'' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            <textarea name="description" id="id_description" class="form-control" rows="5" required>{{ form.description.value|default:'' }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label for="id_tech_stack" class="form-label">Tech Stack (comma separated)</label>
+            <input type="text" name="tech_stack" id="id_tech_stack" class="form-control" value="{{ form.tech_stack.value|default:'' }}" placeholder="e.g. Python, Django, React">
+          </div>
+          <div class="mb-3">
+            <label for="id_github_url" class="form-label">GitHub URL</label>
+            <input type="url" name="github_url" id="id_github_url" class="form-control" value="{{ form.github_url.value|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_live_demo_url" class="form-label">Live Demo URL</label>
+            <input type="url" name="live_demo_url" id="id_live_demo_url" class="form-control" value="{{ form.live_demo_url.value|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_screenshot" class="form-label">Screenshot</label>
+            <input type="file" name="screenshot" id="id_screenshot" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="id_contributors" class="form-label">Contributors (comma separated usernames)</label>
+            <input type="text" name="contributors" id="id_contributors" class="form-control" value="{{ form.contributors.value|default:'' }}">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">{% if form.instance.pk %}Update Project{% else %}Submit Project{% endif %}</button>
+        </form>
+      </div>
+    </div>
+{% endblock dashboard_content %}

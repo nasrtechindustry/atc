@@ -1,0 +1,138 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">My Events</li>
+</ol>{% endblock %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+{% endfor %}
+{% endif %}
+
+<ul class="nav nav-tabs mb-4 border-0 gap-2" id="eventTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active rounded-3 border-0 px-4 py-2 fw-medium" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" style="background:#f0f2f5;color:#333;">Upcoming</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link rounded-3 border-0 px-4 py-2 fw-medium" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" style="background:#f0f2f5;color:#333;">Past</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="eventTabsContent">
+    <div class="tab-pane fade show active" id="upcoming">
+        {% for reg in upcoming %}
+        <div class="card border-0 shadow-sm mb-3 overflow-hidden">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-2 col-4">
+                    {% if reg.event.image %}
+                    <img src="{{ reg.event.image.url }}" alt="{{ reg.event.title }}" style="height:100px;width:100%;object-fit:cover;">
+                    {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height:100px;"><i class="bi bi-calendar-event text-muted fs-2"></i></div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8 col-8">
+                    <div class="p-3">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-primary px-2 py-1 text-white fw-medium" style="font-size:11px;">{{ reg.event.get_category_display }}</span>
+                            <span class="badge bg-success px-2 py-1 text-white fw-medium" style="font-size:11px;">{{ reg.get_status_display }}</span>
+                        </div>
+                        <h6 class="mb-1 fw-semibold">{{ reg.event.title }}</h6>
+                        <div class="d-flex flex-wrap gap-3 small text-muted">
+                            <span><i class="bi bi-calendar me-1"></i>{{ reg.event.start_date|date:"M d, Y" }}</span>
+                            <span><i class="bi bi-clock me-1"></i>{{ reg.event.start_date|date:"H:i" }}</span>
+                            {% if reg.event.location %}<span><i class="bi bi-geo-alt me-1"></i>{{ reg.event.location|truncatechars:25 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-12 text-end p-3">
+                    <a href="{% url 'event_detail' reg.event.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-calendar-plus fs-1 d-block mb-2"></i>
+            <p class="mb-0">No upcoming events. <a href="{% url 'event_list' %}" class="text-decoration-none">Browse events</a></p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="tab-pane fade" id="past">
+        {% for reg in past %}
+        <div class="card border-0 shadow-sm mb-3 overflow-hidden">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-2 col-4">
+                    {% if reg.event.image %}
+                    <img src="{{ reg.event.image.url }}" alt="{{ reg.event.title }}" style="height:100px;width:100%;object-fit:cover;filter:grayscale(0.3);">
+                    {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height:100px;"><i class="bi bi-calendar-check text-muted fs-2"></i></div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8 col-8">
+                    <div class="p-3">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-secondary px-2 py-1 text-white fw-medium" style="font-size:11px;">{{ reg.event.get_category_display }}</span>
+                            <span class="badge bg-{% if reg.status == 'attended' %}success{% elif reg.status == 'missed' %}danger{% else %}secondary{% endif %} px-2 py-1 text-white fw-medium" style="font-size:11px;">{{ reg.get_status_display }}</span>
+                        </div>
+                        <h6 class="mb-1 fw-semibold">{{ reg.event.title }}</h6>
+                        <div class="d-flex flex-wrap gap-3 small text-muted">
+                            <span><i class="bi bi-calendar me-1"></i>{{ reg.event.start_date|date:"M d, Y" }}</span>
+                            <span><i class="bi bi-clock me-1"></i>{{ reg.event.start_date|date:"H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-12 text-end p-3 d-flex gap-1 justify-content-end">
+                    <a href="{% url 'event_detail' reg.event.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">View</a>
+                    {% if reg.status == 'attended' %}
+                    <a href="{% url 'submit_feedback' reg.event.id %}" class="btn btn-outline-warning btn-sm rounded-pill px-3">Feedback</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-clock-history fs-1 d-block mb-2"></i>
+            <p class="mb-0">No past registered events.</p>
+        </div>
+        {% endfor %}
+
+        {% if attended_events %}
+        <h6 class="fw-semibold mt-4 mb-3 text-muted"><i class="bi bi-check-circle me-1"></i>Events You Attended</h6>
+        {% for event in attended_events %}
+        <div class="card border-0 shadow-sm mb-3 overflow-hidden">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-2 col-4">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" style="height:100px;width:100%;object-fit:cover;filter:grayscale(0.3);">
+                    {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height:100px;"><i class="bi bi-calendar-check text-muted fs-2"></i></div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8 col-8">
+                    <div class="p-3">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-secondary px-2 py-1 text-white fw-medium" style="font-size:11px;">{{ event.get_category_display }}</span>
+                            <span class="badge bg-success px-2 py-1 text-white fw-medium" style="font-size:11px;">Attended</span>
+                        </div>
+                        <h6 class="mb-1 fw-semibold">{{ event.title }}</h6>
+                        <div class="d-flex flex-wrap gap-3 small text-muted">
+                            <span><i class="bi bi-calendar me-1"></i>{{ event.start_date|date:"M d, Y" }}</span>
+                            <span><i class="bi bi-clock me-1"></i>{{ event.start_date|date:"H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-12 text-end p-3">
+                    <a href="{% url 'event_detail' event.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">View</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center py-3">No attended events found.</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock dashboard_content %}

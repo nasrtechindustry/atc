@@ -1,0 +1,10 @@
+services:
+  centrifugo:
+    image: centrifugo/centrifugo:v6
+    container_name: aru-centrifugo
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./config.json:/centrifugo/config.json
+    command: centrifugo -c config.json
+    restart: unless-stopped

@@ -22,6 +22,7 @@ media/
 *.pyc
 __pycache__/
 static/admin/
+staticfiles/
 *.mo
 
 # Development/IDE

@@ -1,0 +1,87 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item"><a href="{% url 'member_list' %}">Members</a></li>
+<li class="breadcrumb-item active">{{ member.username }}</li>
+</ol>{% endblock %}
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            {% if profile.photo %}
+              <img src="{{ profile.photo.url }}" class="rounded-circle img-fluid mb-3" width="150" height="150" style="object-fit: cover;" alt="{{ member.username }}">
+            {% else %}
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px;"><span style="font-size: 3rem;">{{ member.username|first|upper }}</span></div>
+            {% endif %}
+            <h4>{{ member.username }}</h4>
+            <p class="text-muted">{{ profile.get_role_display }}</p>
+            {% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+            <div class="d-flex justify-content-center gap-2">
+              {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" class="btn btn-outline-dark btn-sm"><i class="fab fa-github"></i></a>{% endif %}
+              {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin"></i></a>{% endif %}
+              {% if profile.portfolio_url %}<a href="{{ profile.portfolio_url }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-globe"></i></a>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-white"><h5 class="mb-0">Profile Info</h5></div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-sm-6"><strong>Email:</strong> {{ member.email }}</div>
+              <div class="col-sm-6"><strong>Phone:</strong> {{ profile.phone|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>University:</strong> {{ profile.university|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>Course:</strong> {{ profile.course|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>Department:</strong> {{ profile.department|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>Skill Level:</strong> {{ profile.get_skill_level_display|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>Interests:</strong> {{ profile.interests|default:"N/A" }}</div>
+              <div class="col-sm-6"><strong>Joined:</strong> {{ member.date_joined|date:"M d, Y" }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-white"><h5 class="mb-0">Event Registrations</h5></div>
+          <div class="card-body p-3">
+            <div class="table-responsive">
+              <table class="data-table table table-striped table-hover" class="table table-striped mb-0">
+                <thead><tr><th>Event</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>
+                  {% for reg in registrations %}
+                    <tr>
+                      <td><a href="{% url 'event_detail' reg.event.id %}">{{ reg.event.title }}</a></td>
+                      <td><span class="badge bg-{% if reg.status == 'registered' %}success{% elif reg.status == 'cancelled' %}danger{% elif reg.status == 'attended' %}info{% else %}secondary{% endif %}">{{ reg.get_status_display }}</span></td>
+                      <td>{{ reg.registered_at|date:"M d, Y" }}</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-white"><h5 class="mb-0">Projects</h5></div>
+          <div class="card-body">
+            {% for project in projects %}
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <a href="{% url 'project_detail' project.id %}">{{ project.title }}</a>
+                <span class="badge bg-{% if project.status == 'approved' %}success{% elif project.status == 'rejected' %}danger{% else %}warning{% endif %}">{{ project.get_status_display }}</span>
+              </div>
+            {% endfor %}
+                            {% empty %}<p class="text-muted mb-0">No projects.</p>{% endfor %}
+          </div>
+        </div>
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-white"><h5 class="mb-0">Certificates</h5></div>
+          <div class="card-body">
+            {% for cert in certificates %}
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span>{{ cert.event.title }}</span>
+                <a href="{% url 'certificate_detail' cert.id %}" class="btn btn-sm btn-outline-success">View</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock dashboard_content %}

@@ -1,0 +1,37 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Submit Project - {{ event.title }}</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Project Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Description</label>
+                        <textarea name="description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">GitHub URL</label>
+                            <input type="url" name="github_url" class="form-control" placeholder="https://github.com/...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Live Demo URL</label>
+                            <input type="url" name="live_demo_url" class="form-control" placeholder="https://...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Submit Project</button>
+                    <a href="{% url 'hackathon_detail' event.id %}" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

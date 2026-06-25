@@ -1,0 +1,159 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% load brand_icons %}
+
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">Resources</li>
+</ol>{% endblock %}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="mb-0 fw-bold"><i class="bi bi-folder text-primary me-2"></i>Learning Resources <span class="badge bg-primary rounded-pill fs-6 align-middle">{{ total }}</span></h2>
+    {% if user.is_staff %}
+    <a href="{% url 'resource_create' %}" class="btn btn-primary rounded-pill px-4"><i class="bi bi-plus-lg me-1"></i>Add Resource</a>
+    {% endif %}
+</div>
+
+<form method="get" class="row g-3 mb-4" id="filterForm">
+    <div class="col-md-5">
+        <input type="text" name="q" class="form-control" placeholder="Search resources..." value="{{ query }}">
+    </div>
+    <div class="col-md-3">
+        <select name="category" class="form-select" onchange="document.getElementById('filterForm').submit()">
+            <option value="">All Categories</option>
+            {% for key, label in categories %}
+            <option value="{{ key }}" {% if category == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i></button>
+    </div>
+</form>
+
+<div class="row g-4" id="resourceContainer" style="column-count:3;column-gap:1.5rem;display:block;">
+    <style>
+    #resourceContainer { break-inside: avoid; }
+    #resourceContainer > .resource-item { break-inside: avoid; display:inline-block; width:100%; margin-bottom:1.5rem; }
+    @media (max-width:991px){ #resourceContainer { column-count:2; } }
+    @media (max-width:575px){ #resourceContainer { column-count:1; } }
+    </style>
+    {% for resource in resources %}
+    <div class="col-lg-4 col-md-6 resource-item">
+        <div class="card h-100 border-0 shadow-sm overflow-hidden" style="border-radius:14px;">
+            {% if resource.is_youtube %}
+            <!-- YouTube Card -->
+            <a href="{% url 'resource_view' resource.id %}" target="_blank" class="d-block position-relative" style="text-decoration:none;">
+                <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center">
+                    <img src="{{ resource.youtube_thumbnail }}" 
+                         alt="{{ resource.title }}" class="w-100 h-100" style="object-fit:cover;"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background:rgba(0,0,0,.3);">
+                        <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,0,0,.8);display:flex;align-items:center;justify-content:center;">
+                            <i class="bi bi-play-fill" style="color:#fff;font-size:2rem;margin-left:3px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="card-body d-flex flex-column p-3">
+                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                    <span class="badge rounded-pill bg-danger px-3 py-1 fw-medium" style="font-size:11px;"><i class="bi bi-play-circle-fill me-1"></i>{{ resource.get_category_display }}</span>
+                    {% if resource.is_featured %}<span class="badge rounded-pill bg-warning text-dark px-3 py-1 fw-medium" style="font-size:11px;"><i class="bi bi-star-fill me-1"></i>Featured</span>{% endif %}
+                </div>
+                <h6 class="fw-semibold mb-1">{{ resource.title }}</h6>
+                {% if resource.description %}<p class="text-muted small mb-2">{{ resource.description|truncatewords:15 }}</p>{% endif %}
+                <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                    <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ resource.views_count }} view{{ resource.views_count|pluralize }}</small>
+                    <a href="{% url 'resource_view' resource.id %}" target="_blank" class="btn btn-sm btn-danger rounded-pill px-3"><i class="bi bi-box-arrow-up-right me-1"></i>Watch</a>
+                </div>
+            </div>
+            {% else %}
+            <!-- Regular Card -->
+            <div class="card-body d-flex flex-column p-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge rounded-pill bg-primary px-3 py-1 fw-medium" style="font-size:11px;">{{ resource.get_category_display }}</span>
+                    {% if resource.is_featured %}<span class="badge rounded-pill bg-warning text-dark px-3 py-1 fw-medium" style="font-size:11px;"><i class="bi bi-star-fill me-1"></i>Featured</span>{% endif %}
+                </div>
+                <div class="d-flex align-items-start gap-3">
+                    <div class="flex-shrink-0">
+                        {% with icon=resource.icon_data %}
+                        <div class="rounded-3 d-flex align-items-center justify-content-center" style="width:44px;height:44px;background:{{ icon.bg }};">
+                            {% if icon.devicon %}<i class="{{ icon.devicon }}" style="color:{{ icon.color }};font-size:1.5rem;"></i>{% else %}<i class="{{ icon.icon }}" style="color:{{ icon.color }};font-size:1.3rem;"></i>{% endif %}
+                        </div>
+                        {% endwith %}
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="fw-semibold mb-1 text-truncate">{{ resource.title }}</h6>
+                        {% if resource.description %}<p class="text-muted small mb-1">{{ resource.description|truncatewords:12 }}</p>{% endif %}
+                        <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ resource.views_count }} view{{ resource.views_count|pluralize }}</small>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-top d-flex gap-2">
+                    {% if resource.url %}
+                    <a href="{% url 'resource_view' resource.id %}" target="_blank" class="btn btn-sm rounded-pill px-3 flex-fill {% if 'github' in resource.url %}btn-outline-dark{% else %}btn-outline-primary{% endif %}">
+                        <i class="bi {% if 'github' in resource.url %}bi-github{% else %}bi-box-arrow-up-right{% endif %} me-1"></i>
+                        {% if 'github' in resource.url %}GitHub{% else %}Open{% endif %}
+                    </a>
+                    {% endif %}
+                    {% if resource.file %}
+                    <a href="{{ resource.file.url }}" class="btn btn-outline-success btn-sm rounded-pill px-3" download><i class="bi bi-download me-1"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not resources %}
+<div class="text-center py-5">
+    <i class="bi bi-folder fs-1 text-muted d-block mb-2"></i>
+    <p class="text-muted">No resources found.</p>
+</div>
+{% endif %}
+
+<div class="text-center mt-4 d-none" id="loadingSpinner"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
+
+<script>
+(function() {
+    var container = document.getElementById('resourceContainer');
+    var spinner = document.getElementById('loadingSpinner');
+    var currentPage = {{ resources.number }};
+    var totalPages = {{ resources.paginator.num_pages }};
+    var loading = false;
+    var urlBase = '?{% if query %}q={{ query }}&{% endif %}{% if category %}category={{ category }}&{% endif %}';
+    var scrollEl = document.querySelector('.dashboard-content') || window;
+
+    function loadNextPage() {
+        if (loading || currentPage >= totalPages) return;
+        loading = true;
+        spinner.classList.remove('d-none');
+        fetch(urlBase + 'page=' + (currentPage + 1), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                var newItems = doc.querySelectorAll('.resource-item');
+                newItems.forEach(function(item) { container.appendChild(item); });
+                currentPage++;
+                loading = false;
+                spinner.classList.add('d-none');
+                if (currentPage >= totalPages) { scrollEl.removeEventListener('scroll', onScroll); }
+            })
+            .catch(function() { loading = false; spinner.classList.add('d-none'); });
+    }
+
+    function onScroll() {
+        var scrollTop = scrollEl.scrollTop || window.scrollY;
+        var scrollHeight = scrollEl.scrollHeight || document.body.offsetHeight;
+        var clientHeight = scrollEl.clientHeight || window.innerHeight;
+        if ((scrollTop + clientHeight) >= scrollHeight - 400) {
+            loadNextPage();
+        }
+    }
+
+    if (totalPages > 1) { scrollEl.addEventListener('scroll', onScroll); }
+})();
+</script>
+{% endblock dashboard_content %}

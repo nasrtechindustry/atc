@@ -1,0 +1,93 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Admin Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="row g-2 g-md-3 mb-4">
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-primary mb-0 fs-4">{{ stats.total_members }}</h3><small class="text-muted">Total Members</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-success mb-0 fs-4">{{ stats.active_members }}</h3><small class="text-muted">Active</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-danger mb-0 fs-4">{{ stats.inactive_members }}</h3><small class="text-muted">Inactive</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-info mb-0 fs-4">{{ stats.new_members_this_month }}</h3><small class="text-muted">New This Month</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-primary mb-0 fs-4">{{ stats.total_events }}</h3><small class="text-muted">Total Events</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-success mb-0 fs-4">{{ stats.upcoming_events }}</h3><small class="text-muted">Upcoming</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-secondary mb-0 fs-4">{{ stats.completed_events }}</h3><small class="text-muted">Completed</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-danger mb-0 fs-4">{{ stats.cancelled_events }}</h3><small class="text-muted">Cancelled</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-primary mb-0 fs-4">{{ stats.total_registrations }}</h3><small class="text-muted">Registrations</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-warning mb-0 fs-4">{{ stats.total_inquiries }}</h3><small class="text-muted">Inquiries</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-success mb-0 fs-4">{{ stats.total_projects }}</h3><small class="text-muted">Projects</small></div></div></div>
+    <div class="col-6 col-md-4 col-lg-3 stat-card"><div class="card border-0 shadow-sm"><div class="card-body text-center py-3"><h3 class="text-info mb-0 fs-4">{{ stats.total_certificates }}</h3><small class="text-muted">Certificates</small></div></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Recent Members</div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0 small">
+                    <thead class="table-light"><tr><th>Username</th><th>Email</th><th>Joined</th></tr></thead>
+                    <tbody>
+                        {% for m in stats.recent_members %}
+                        <tr><td><a href="{% url 'member_detail' m.id %}">{{ m.username }}</a></td><td>{{ m.email }}</td><td>{{ m.date_joined|date:"M d" }}</td></tr>
+                        {% empty %}<tr><td colspan="3" class="text-muted text-center py-3">No members yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Recent Registrations</div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0 small">
+                    <thead class="table-light"><tr><th>User</th><th>Event</th><th>Date</th></tr></thead>
+                    <tbody>
+                        {% for reg in stats.recent_registrations %}
+                        <tr><td>{{ reg.user.username }}</td><td>{{ reg.event.title }}</td><td>{{ reg.registered_at|date:"M d" }}</td></tr>
+                        {% empty %}<tr><td colspan="3" class="text-muted text-center py-3">No registrations yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center justify-content-between">
+                <span>Latest Announcements</span>
+                <a href="{% url 'announcement_create' %}" class="btn btn-sm btn-primary rounded-pill px-3"><i class="bi bi-plus"></i> New</a>
+            </div>
+            <div class="card-body">
+                {% for a in announcements %}
+                <div class="mb-3 pb-2 border-bottom">
+                    <h6 class="mb-1">{% if a.is_pinned %}<span class="badge bg-danger me-1">Pinned</span>{% endif %}{{ a.title }}</h6>
+                    <small class="text-muted">{{ a.created_at|date:"M d" }}</small>
+                    <p class="mb-0 mt-1 small">{{ a.content|truncatewords:20 }}</p>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No announcements yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Quick Actions</div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'event_create' %}" class="btn btn-primary btn-sm rounded-pill px-3"><i class="bi bi-plus-circle"></i> Create Event</a>
+                    <a href="{% url 'hackathon_create' %}" class="btn btn-warning btn-sm rounded-pill px-3"><i class="bi bi-trophy"></i> New Hackathon</a>
+                    <a href="{% url 'member_list' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3"><i class="bi bi-people"></i> Members</a>
+                    <a href="{% url 'announcement_create' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3"><i class="bi bi-megaphone"></i> Announcement</a>
+                    <a href="{% url 'resource_create' %}" class="btn btn-outline-success btn-sm rounded-pill px-3"><i class="bi bi-folder"></i> Add Resource</a>
+                    <a href="{% url 'certificate_create' %}" class="btn btn-outline-info btn-sm rounded-pill px-3"><i class="bi bi-award"></i> Certificate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

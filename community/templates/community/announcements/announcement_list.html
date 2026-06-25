@@ -1,0 +1,55 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">Announcements</li>
+</ol>{% endblock %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Announcements</h2>
+      {% if user.is_staff %}
+        <a href="{% url 'announcement_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Announcement</a>
+      {% endif %}
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+      {% endfor %}
+    {% endif %}
+    {% for announcement in announcements %}
+      <div class="card shadow-sm mb-3 {% if announcement.is_pinned %}border-primary{% endif %}">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title mb-1">
+                {% if announcement.is_pinned %}<i class="bi bi-pin-angle-fill text-primary me-1"></i>{% endif %}
+                {{ announcement.title }}
+              </h5>
+              <small class="text-muted">Posted {{ announcement.created_at|date:"M d, Y H:i" }} by {{ announcement.created_by.username }}</small>
+            </div>
+            {% if user.is_staff %}
+              <div class="d-flex gap-1">
+                <a href="{% url 'announcement_edit' announcement.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <form method="post" action="{% url 'announcement_delete' announcement.id %}" class="d-inline" onsubmit="return confirm('Delete this announcement?');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+          <p class="card-text mt-2">{{ announcement.content|linebreaks }}</p>
+          {% if announcement.image %}<img src="{{ announcement.image.url }}" class="img-fluid rounded mt-2" style="max-height: 300px;" alt="{{ announcement.title }}">{% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="text-center py-5"><p class="text-muted">No announcements yet.</p></div>
+    {% endfor %}
+    {% if announcements.paginator.num_pages > 1 %}
+      <nav class="mt-4"><ul class="pagination justify-content-center">
+        {% if announcements.has_previous %}<li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li><li class="page-item"><a class="page-link" href="?page={{ announcements.previous_page_number }}">&lsaquo;</a></li>{% endif %}
+        {% for num in announcements.paginator.page_range %}
+          {% if announcements.number == num %}<li class="page-item active"><span class="page-link">{{ num }}</span></li>{% elif num > announcements.number|add:'-3' and num < announcements.number|add:'3' %}<li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>{% endif %}
+        {% endfor %}
+        {% if announcements.has_next %}<li class="page-item"><a class="page-link" href="?page={{ announcements.next_page_number }}">&rsaquo;</a></li><li class="page-item"><a class="page-link" href="?page={{ announcements.paginator.num_pages }}">&raquo;</a></li>{% endif %}
+      </ul></nav>
+    {% endif %}
+{% endblock dashboard_content %}

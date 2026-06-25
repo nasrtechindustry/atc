@@ -1,0 +1,35 @@
+{% extends 'community/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
+            <h2 class="mt-2">Events</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <p class="lead mb-4">Our community events bring together tech enthusiasts, professionals, and learners for networking, knowledge sharing, and collaboration.</p>
+
+                <h4 class="mt-5 mb-3">What to Expect</h4>
+                <ul>
+                    <li><strong>Guest Speakers</strong> - Industry leaders and experts share their insights on the latest trends in technology.</li>
+                    <li><strong>Panel Discussions</strong> - Engaging conversations on topics like career growth, open source, and innovation.</li>
+                    <li><strong>Networking</strong> - Connect with like-minded individuals, potential mentors, and collaborators.</li>
+                    <li><strong>Lightning Talks</strong> - Short, focused presentations by community members on topics they are passionate about.</li>
+                </ul>
+
+                <h4 class="mt-5 mb-3">Event Schedule</h4>
+                <p>Events are held throughout the year, with major meetups every month. Check our events page for the full schedule and registration details.</p>
+
+                <h4 class="mt-5 mb-3">Who Should Attend</h4>
+                <p>Everyone is welcome! Whether you are a student, a professional, or just curious about technology, our events offer value for all experience levels.</p>
+
+                <div class="text-center mt-5">
+                    <a href="{% url 'event_list' %}" class="btn btn-primary px-4 py-2">View All Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

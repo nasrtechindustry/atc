@@ -1,0 +1,114 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-warning bg-opacity-10 fw-semibold py-3 d-flex align-items-center gap-2">
+                <i class="bi bi-trophy text-warning"></i> Create Hackathon
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}{% for m in messages %}<div class="alert alert-{{ m.tags }}">{{ m }}</div>{% endfor %}{% endif %}
+                {% if form.errors %}<div class="alert alert-danger">{% for field, errors in form.errors.items %}{% for e in errors %}<p class="mb-0">{{ e }}</p>{% endfor %}{% endfor %}</div>{% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12"><label class="form-label fw-medium">Hackathon Title</label><input type="text" name="title" class="form-control" value="{{ form.title.value|default:'' }}" required></div>
+                        <div class="col-12"><label class="form-label fw-medium">Description</label><textarea name="description" class="form-control" rows="5" required>{{ form.description.value|default:'' }}</textarea></div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">Status</label>
+                            <select name="status" class="form-select">
+                                {% for k, l in form.fields.status.choices %}<option value="{{ k }}" {% if form.status.value == k %}selected{% endif %}>{{ l }}</option>{% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">Capacity</label>
+                            <input type="number" name="capacity" class="form-control" value="{{ form.capacity.value|default:'0' }}" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">Image</label>
+                            <input type="file" name="image" class="form-control">
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Date & Location</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6"><label class="form-label fw-medium">Start</label><input type="datetime-local" name="start_date" class="form-control" value="{{ form.start_date.value|date:'Y-m-d\\TH:i'|default:'' }}" required></div>
+                        <div class="col-md-6"><label class="form-label fw-medium">End</label><input type="datetime-local" name="end_date" class="form-control" value="{{ form.end_date.value|date:'Y-m-d\\TH:i'|default:'' }}" required></div>
+                        <div class="col-md-6"><label class="form-label fw-medium">Location</label><input type="text" name="location" class="form-control" value="{{ form.location.value|default:'' }}"></div>
+                        <div class="col-md-6"><label class="form-label fw-medium">Venue Details</label><textarea name="venue_details" class="form-control" rows="2">{{ form.venue_details.value|default:'' }}</textarea></div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Food & Payment</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3"><div class="form-check"><input type="checkbox" name="has_food" class="form-check-input" {% if form.has_food.value %}checked{% endif %}><label class="form-check-label">Food Provided</label></div></div>
+                        <div class="col-md-9"><input type="text" name="food_details" class="form-control" placeholder="e.g. Lunch & Refreshments" value="{{ form.food_details.value|default:'' }}"></div>
+                        <div class="col-md-3"><div class="form-check"><input type="checkbox" name="has_payment" class="form-check-input" {% if form.has_payment.value %}checked{% endif %}><label class="form-check-label">Payment Required</label></div></div>
+                        <div class="col-md-9"><input type="text" name="payment_details" class="form-control" placeholder="e.g. Free for members" value="{{ form.payment_details.value|default:'' }}"></div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">What's Included</h6>
+                    <textarea name="components" class="form-control mb-4" rows="3" placeholder="One per line">{{ form.components.value|default:'' }}</textarea>
+
+                    <h6 class="fw-bold mb-3">Speakers <button type="button" class="btn btn-sm btn-outline-warning rounded-pill px-3 ms-2" onclick="addSpeaker()"><i class="bi bi-plus"></i> Add</button></h6>
+                    <div id="speakersContainer" class="mb-4">
+                        <div class="speaker-entry row g-2 mb-2 p-3 rounded bg-light">
+                            <div class="col-md-4"><input type="text" name="speaker_name" class="form-control form-control-sm" placeholder="Name" oninput="refreshSpeakerDropdowns()"></div>
+                            <div class="col-md-3"><input type="text" name="speaker_bio" class="form-control form-control-sm" placeholder="Title/Bio"></div>
+                            <div class="col-md-3"><input type="text" name="speaker_phone" class="form-control form-control-sm" placeholder="Phone"></div>
+                            <div class="col-md-2"><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="this.closest('.speaker-entry').remove();refreshSpeakerDropdowns()"><i class="bi bi-x"></i></button></div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Agenda <button type="button" class="btn btn-sm btn-outline-warning rounded-pill px-3 ms-2" onclick="addAgenda()"><i class="bi bi-plus"></i> Add</button></h6>
+                    <div id="agendaContainer" class="mb-4">
+                        <div class="agenda-entry row g-2 mb-2 p-3 rounded bg-light">
+                            <div class="col-md-2"><input type="time" name="agenda_start" class="form-control form-control-sm"></div>
+                            <div class="col-md-2"><input type="time" name="agenda_end" class="form-control form-control-sm"></div>
+                            <div class="col-md-4"><input type="text" name="agenda_title" class="form-control form-control-sm" placeholder="Session title"></div>
+                            <div class="col-md-3"><select name="agenda_speaker" class="form-select form-select-sm"><option value="">No speaker</option></select></div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 pt-3 border-top">
+                        <button type="submit" class="btn btn-warning px-5 fw-semibold"><i class="bi bi-trophy me-1"></i>Create Hackathon</button>
+                        <a href="{% url 'hackathon_list' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function refreshSpeakerDropdowns() {
+    var speakers = [];
+    document.querySelectorAll('.speaker-entry input[name=\"speaker_name\"]').forEach(function(inp) {
+        if (inp.value.trim()) speakers.push(inp.value.trim());
+    });
+    document.querySelectorAll('#agendaContainer select[name=\"agenda_speaker\"]').forEach(function(sel) {
+        var cur = sel.value;
+        sel.innerHTML = '<option value=\"\">No speaker</option>';
+        speakers.forEach(function(s) { sel.innerHTML += '<option value=\"' + s + '\" ' + (cur === s ? 'selected' : '') + '>' + s + '</option>'; });
+    });
+}
+function addSpeaker() {
+    var c = document.getElementById('speakersContainer');
+    var e = document.createElement('div');
+    e.className = 'speaker-entry row g-2 mb-2 p-3 rounded bg-light';
+    e.innerHTML = '<div class=\"col-md-4\"><input type=\"text\" name=\"speaker_name\" class=\"form-control form-control-sm\" placeholder=\"Name\" oninput=\"refreshSpeakerDropdowns()\"></div><div class=\"col-md-3\"><input type=\"text\" name=\"speaker_bio\" class=\"form-control form-control-sm\" placeholder=\"Title/Bio\"></div><div class=\"col-md-3\"><input type=\"text\" name=\"speaker_phone\" class=\"form-control form-control-sm\" placeholder=\"Phone\"></div><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-sm btn-outline-danger w-100\" onclick=\"this.closest(\'.speaker-entry\').remove();refreshSpeakerDropdowns()\"><i class=\"bi bi-x\"></i></button></div>';
+    c.appendChild(e); refreshSpeakerDropdowns();
+}
+function addAgenda() {
+    var c = document.getElementById('agendaContainer');
+    var e = document.createElement('div');
+    e.className = 'agenda-entry row g-2 mb-2 p-3 rounded bg-light';
+    e.innerHTML = '<div class=\"col-md-2\"><input type=\"time\" name=\"agenda_start\" class=\"form-control form-control-sm\"></div><div class=\"col-md-2\"><input type=\"time\" name=\"agenda_end\" class=\"form-control form-control-sm\"></div><div class=\"col-md-4\"><input type=\"text\" name=\"agenda_title\" class=\"form-control form-control-sm\" placeholder=\"Session title\"></div><div class=\"col-md-3\"><select name=\"agenda_speaker\" class=\"form-select form-select-sm\"><option value=\"\">No speaker</option></select></div><div class=\"col-md-1\"><button type=\"button\" class=\"btn btn-sm btn-outline-danger\" onclick=\"this.closest(\'.agenda-entry\').remove()\"><i class=\"bi bi-x\"></i></button></div>';
+    c.appendChild(e); refreshSpeakerDropdowns();
+}
+refreshSpeakerDropdowns();
+</script>
+{% endblock %}

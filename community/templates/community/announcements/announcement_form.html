@@ -1,0 +1,45 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h2 class="mb-4">{% if form.instance.pk %}Edit Announcement{% else %}New Announcement{% endif %}</h2>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+          {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}<p>{{ error }}</p>{% endfor %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light shadow">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_title" class="form-label">Title</label>
+            <input type="text" name="title" id="id_title" class="form-control" value="{{ form.title.value|default:'' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="id_content" class="form-label">Content</label>
+            <textarea name="content" id="id_content" class="form-control" rows="6" required>{{ form.content.value|default:'' }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label for="id_image" class="form-label">Image (optional)</label>
+            <input type="file" name="image" id="id_image" class="form-control">
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" name="is_published" id="id_is_published" class="form-check-input" {% if form.is_published.value %}checked{% endif %}>
+            <label class="form-check-label" for="id_is_published">Published</label>
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" name="is_pinned" id="id_is_pinned" class="form-check-input" {% if form.is_pinned.value %}checked{% endif %}>
+            <label class="form-check-label" for="id_is_pinned">Pinned</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">{% if form.instance.pk %}Update Announcement{% else %}Create Announcement{% endif %}</button>
+        </form>
+      </div>
+    </div>
+{% endblock dashboard_content %}

@@ -1,0 +1,156 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <!-- Hero -->
+        <div class="card border-0 shadow-sm mb-4 overflow-hidden" style="border-radius:16px;">
+            <div style="height:300px;overflow:hidden;background:rgba(255,193,7,.1);">
+                <img src="{{ event.image.url }}" class="w-100 h-100" alt="{{ event.title }}" style="object-fit:cover;" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'d-flex align-items-center justify-content-center h-100\'><i class=\'bi bi-trophy text-warning\' style=\'font-size:4rem;\'></i></div>'">
+            </div>
+            <div class="card-body p-4">
+                <span class="badge bg-warning text-dark px-3 py-1 fs-6 rounded-pill mb-3">Hackathon</span>
+                <h2 class="fw-bold mb-3">{{ event.title }}</h2>
+                <p class="text-muted mb-4">{{ event.description }}</p>
+
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <div class="bg-light rounded-3 p-3 text-center flex-fill" style="min-width:100px;">
+                        <div class="fw-bold fs-5 text-warning">{{ event.start_date|date:"d" }}</div>
+                        <small class="text-muted">{{ event.start_date|date:"M Y" }}</small>
+                    </div>
+                    <div class="bg-light rounded-3 p-3 text-center flex-fill" style="min-width:100px;">
+                        <div class="fw-bold fs-5">{{ event.start_date|date:"H:i" }}</div>
+                        <small class="text-muted">Start Time</small>
+                    </div>
+                    <div class="bg-light rounded-3 p-3 text-center flex-fill" style="min-width:100px;">
+                        <div class="fw-bold fs-5">{{ event.end_date|date:"d" }}</div>
+                        <small class="text-muted">End Day</small>
+                    </div>
+                    <div class="bg-light rounded-3 p-3 text-center flex-fill" style="min-width:100px;">
+                        <div class="fw-bold fs-5 text-{% if not event.is_full %}success{% else %}danger{% endif %}">{{ event.registration_count }}/{{ event.capacity|default:"∞" }}</div>
+                        <small class="text-muted">Spots Filled</small>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mb-3 text-muted small">
+                    <i class="bi bi-geo-alt"></i> <span>{{ event.location|default:"Online" }}</span>
+                    <span class="mx-2">|</span>
+                    <i class="bi bi-clock"></i> <span>{{ event.start_date|date:"l, M d" }} - {{ event.end_date|date:"l, M d" }}</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 flex-wrap">
+                    {% if user.is_authenticated %}
+                        {% if not is_registered %}
+                            <a href="{% url 'hackathon_register' event.id %}" class="btn btn-warning btn-lg fw-semibold rounded-pill px-4"><i class="bi bi-trophy me-1"></i>Register for Hackathon</a>
+                        {% else %}
+                            <span class="badge bg-success fs-6 px-4 py-2 align-self-center rounded-pill"><i class="bi bi-check-circle me-1"></i>Registered</span>
+                            {% if not user_team %}
+                                <a href="#" class="btn btn-outline-warning btn-lg rounded-pill px-4 fw-semibold" id="createTeamBtn"><i class="bi bi-people me-1"></i>Create Team</a>
+                                <form method="post" action="{% url 'hackathon_create_team' event.id %}" id="teamForm" style="display:none;">{% csrf_token %}<input type="hidden" name="name" id="teamNameInput"></form>
+                                <script>
+                                document.getElementById('createTeamBtn')?.addEventListener('click', function(e){
+                                    e.preventDefault();
+                                    var name = prompt('Enter your team name:');
+                                    if(name) { document.getElementById('teamNameInput').value = name; document.getElementById('teamForm').submit(); }
+                                });
+                                </script>
+                            {% endif %}
+                            <a href="{% url 'hackathon_submit_project' event.id %}" class="btn btn-outline-success rounded-pill px-3 fw-semibold"><i class="bi bi-upload me-1"></i>Submit Project</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Prizes Section -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+            <div class="card-body p-4 text-center">
+                <div class="row g-3">
+                    <div class="col-4">
+                        <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                            <i class="bi bi-trophy-fill text-warning fs-2"></i>
+                            <h5 class="mt-2 mb-0">1st Place</h5>
+                            <small class="text-muted">Prize TBD</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-secondary bg-opacity-10 rounded-3 p-3">
+                            <i class="bi bi-trophy-fill text-secondary fs-2"></i>
+                            <h5 class="mt-2 mb-0">2nd Place</h5>
+                            <small class="text-muted">Prize TBD</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-danger bg-opacity-10 rounded-3 p-3">
+                            <i class="bi bi-trophy-fill text-danger fs-2" style="color:#cd7f32;"></i>
+                            <h5 class="mt-2 mb-0">3rd Place</h5>
+                            <small class="text-muted">Prize TBD</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teams Section -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+            <div class="card-header bg-white fw-semibold d-flex align-items-center py-3" style="border-radius:16px 16px 0 0;">
+                <i class="bi bi-people text-warning me-2"></i> Teams
+                <span class="badge bg-warning text-dark ms-2 rounded-pill">{{ teams|length }}</span>
+            </div>
+            <div class="card-body p-0">
+                {% for team in teams %}
+                <div class="d-flex align-items-center justify-content-between px-4 py-3 {% if not forloop.last %}border-bottom{% endif %}">
+                    <div>
+                        <h6 class="mb-1 fw-semibold">{{ team.name }}</h6>
+                        <small class="text-muted"><i class="bi bi-person me-1"></i>{{ team.member_count }} member(s) &middot; Lead: {{ team.created_by.username }}</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        {% if team.submissions.exists %}
+                        <span class="badge bg-success rounded-pill px-3 py-1">Submitted</span>
+                        {% endif %}
+                        {% if user.is_authenticated and not user_team and team.is_open %}
+                        <a href="{% url 'hackathon_join_team' team.id %}" class="btn btn-outline-warning btn-sm rounded-pill px-3">Join</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4 text-muted"><i class="bi bi-people fs-2 d-block mb-2"></i>No teams yet. Be the first!</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+            <div class="card-body text-center py-4">
+                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px;">
+                    <i class="bi bi-trophy text-warning fs-2"></i>
+                </div>
+                <h3 class="fw-bold text-warning mb-1">{{ teams|length }}</h3>
+                <small class="text-muted">Teams Competing</small>
+            </div>
+        </div>
+        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+            <div class="card-body text-center py-4">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px;">
+                    <i class="bi bi-people text-success fs-2"></i>
+                </div>
+                <h3 class="fw-bold text-success mb-1">{{ event.registration_count }}</h3>
+                <small class="text-muted">Participants</small>
+            </div>
+        </div>
+        <div class="card border-0 shadow-sm" style="border-radius:16px;">
+            <div class="card-body text-center py-4">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px;">
+                    <i class="bi bi-clock text-info fs-2"></i>
+                </div>
+                <h3 class="fw-bold text-info mb-1">{{ event.end_date|timeuntil:event.start_date }}</h3>
+                <small class="text-muted">Duration</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

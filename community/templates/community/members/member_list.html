@@ -1,0 +1,93 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">Members</li>
+</ol>{% endblock %}
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+      <h2 class="mb-0">Members</h2>
+      <a href="?export=csv" class="btn btn-success btn-sm"><i class="bi bi-download"></i> Export CSV</a>
+    </div>
+    <form method="get" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Search by name or email..." value="{{ request.GET.search }}">
+      </div>
+      <div class="col-md-3">
+        <select name="role" class="form-select">
+          <option value="">All Roles</option>
+          {% for key, label in roles %}
+            <option value="{{ key }}" {% if request.GET.role == key %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="status" class="form-select">
+          <option value="">All Status</option>
+          <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
+          <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i></button>
+      </div>
+    </form>
+    <div class="card shadow-sm">
+      <div class="card-body p-3">
+        <div class="table-responsive">
+          <table class="data-table table table-striped table-hover" class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for member in members %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><a href="{% url 'member_detail' member.id %}">{{ member.username }}</a></td>
+                  <td>{{ member.email }}</td>
+                  <td><span class="badge bg-info">{{ member.profile.get_role_display }}</span></td>
+                  <td>{% if member.is_active %}<span class="badge bg-success">Active</span>{% else %}<span class="badge bg-danger">Inactive</span>{% endif %}</td>
+                  <td>{{ member.date_joined|date:"M d, Y" }}</td>
+                  <td>
+                    {% if user.is_staff %}
+                      <div class="d-flex gap-1">
+                        {% if member.is_active %}
+                          <form method="post" action="{% url 'member_activate' member.id %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-warning">Deactivate</button></form>
+                        {% else %}
+                          <form method="post" action="{% url 'member_activate' member.id %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-success">Activate</button></form>
+                        {% endif %}
+                        <form method="post" action="{% url 'member_change_role' member.id %}" class="d-inline">
+                          {% csrf_token %}
+                          <select name="role" class="form-select form-select-sm d-inline-block w-auto" onchange="this.form.submit()">
+                            {% for key, label in roles %}
+                              <option value="{{ key }}" {% if member.profile.role == key %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                          </select>
+                        </form>
+                      </div>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% if members.paginator.num_pages > 1 %}
+      <nav class="mt-4"><ul class="pagination justify-content-center">
+        {% if members.has_previous %}<li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li><li class="page-item"><a class="page-link" href="?page={{ members.previous_page_number }}">&lsaquo;</a></li>{% endif %}
+        {% for num in members.paginator.page_range %}
+          {% if members.number == num %}<li class="page-item active"><span class="page-link">{{ num }}</span></li>{% elif num > members.number|add:'-3' and num < members.number|add:'3' %}<li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>{% endif %}
+        {% endfor %}
+        {% if members.has_next %}<li class="page-item"><a class="page-link" href="?page={{ members.next_page_number }}">&rsaquo;</a></li><li class="page-item"><a class="page-link" href="?page={{ members.paginator.num_pages }}">&raquo;</a></li>{% endif %}
+      </ul></nav>
+    {% endif %}
+{% endblock dashboard_content %}

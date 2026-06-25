@@ -1,0 +1,58 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item active">Projects</li>
+</ol>{% endblock %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0 fw-bold"><i class="bi bi-code-square text-primary me-2"></i>Projects</h2>
+    {% if user.is_authenticated %}
+    <a href="{% url 'project_submit' %}" class="btn btn-primary rounded-pill px-4"><i class="bi bi-plus-lg me-1"></i>Submit Project</a>
+    {% endif %}
+</div>
+
+
+{% if projects %}
+<div class="row g-4">
+    {% for project in projects %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-0 shadow-sm overflow-hidden" style="border-radius:14px;">
+            {% if project.screenshot %}
+            <img src="{{ project.screenshot.url }}" class="card-img-top" alt="{{ project.title }}" style="height:180px;object-fit:cover;">
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height:120px;">
+                <i class="bi bi-code-slash text-muted fs-1"></i>
+            </div>
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge rounded-pill bg-{% if project.status == 'approved' %}success{% elif project.status == 'rejected' %}danger{% else %}warning{% endif %} px-3 py-1 fw-medium">{{ project.get_status_display }}</span>
+                    {% if project.is_featured %}<span class="badge rounded-pill bg-warning text-dark px-3 py-1 fw-medium"><i class="bi bi-star-fill me-1"></i>Featured</span>{% endif %}
+                </div>
+                <h5 class="fw-semibold mb-1">{{ project.title }}</h5>
+                <p class="text-muted small flex-grow-1">{{ project.description|truncatewords:20 }}</p>
+                {% if project.tech_stack %}
+                <div class="d-flex flex-wrap gap-1 mb-2">
+                    {% for tech in project.tech_stack|slice:":30" %}{% if tech != ',' %}
+                    <span class="badge bg-light text-dark px-2 py-1 fw-normal" style="font-size:11px;">{{ tech }}</span>
+                    {% endif %}{% endfor %}
+                </div>
+                {% endif %}
+                <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                    <small class="text-muted"><i class="bi bi-person me-1"></i>{{ project.owner.username }}</small>
+                    <a href="{% url 'project_detail' project.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-code-square fs-1 text-muted d-block mb-2"></i>
+    <p class="text-muted">No projects found. <a href="{% url 'project_submit' %}">Submit the first one!</a></p>
+</div>
+{% endif %}
+{% endblock dashboard_content %}

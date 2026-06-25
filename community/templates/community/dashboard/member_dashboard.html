@@ -1,0 +1,134 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Member Dashboard{% endblock %}
+
+{% block dashboard_content %}
+{% with pct=user.profile.completion_percentage %}
+<div class="row g-3 align-items-center mb-4">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center gap-3">
+            {% if user.profile.photo %}
+            <img src="{{ user.profile.photo.url }}" alt="" class="rounded-circle" width="56" height="56" style="object-fit:cover;">
+            {% else %}
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:56px;height:56px;font-size:24px;">{{ user.username|first|upper }}</div>
+            {% endif %}
+            <div>
+                <h5 class="mb-0">{{ user.username }}</h5>
+                <small class="text-muted">Profile {{ pct }}% complete</small>
+            </div>
+        </div>
+        {% if pct < 100 %}
+        <a href="{% url 'profile_edit' %}" class="btn btn-sm btn-outline-primary mt-2">Complete Profile</a>
+        {% endif %}
+    </div>
+    <div class="col-md-4 text-md-end d-flex gap-2 justify-content-md-end">
+        <a href="{% url 'event_list' %}" class="btn btn-primary btn-sm"><i class="bi bi-calendar-plus"></i> Browse Events</a>
+        <a href="{% url 'project_submit' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-circle"></i> Submit Project</a>
+    </div>
+</div>
+{% endwith %}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">Upcoming Registered Events</div>
+            <div class="card-body">
+                {% for reg in registrations %}
+                <div class="d-flex align-items-center gap-3 mb-3 pb-2 border-bottom">
+                    <div class="flex-shrink-0 rounded overflow-hidden" style="width:60px;height:60px;">
+                        {% if reg.event.image %}
+                        <img src="{{ reg.event.image.url }}" alt="{{ reg.event.title }}" style="width:60px;height:60px;object-fit:cover;">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center h-100 text-muted"><i class="bi bi-calendar-event"></i></div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="mb-1 text-truncate">{{ reg.event.title }}</h6>
+                        <small class="text-muted">{{ reg.event.start_date|date:"M d, Y" }}</small>
+                    </div>
+                    <a href="{% url 'event_detail' reg.event.id %}" class="btn btn-sm btn-outline-primary flex-shrink-0">View</a>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No registrations yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">Browse Upcoming Events</div>
+            <div class="card-body">
+                {% for event in upcoming_events %}
+                <div class="d-flex align-items-center gap-3 mb-3 pb-2 border-bottom">
+                    <div class="flex-shrink-0 rounded overflow-hidden" style="width:60px;height:60px;">
+                        {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="{{ event.title }}" style="width:60px;height:60px;object-fit:cover;">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center h-100 text-muted"><i class="bi bi-calendar-event"></i></div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="mb-1 text-truncate">{{ event.title }}</h6>
+                        <small class="text-muted">{{ event.start_date|date:"M d, Y" }} &middot; {{ event.location|truncatechars:30 }}</small>
+                    </div>
+                    <a href="{% url 'event_detail' event.id %}" class="btn btn-sm btn-outline-primary flex-shrink-0">View</a>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No upcoming events</p>
+                {% endfor %}
+                <a href="{% url 'event_list' %}" class="btn btn-link btn-sm p-0">View all events &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">Latest Announcements</div>
+            <div class="card-body">
+                {% for a in announcements %}
+                <div class="mb-3 pb-2 border-bottom">
+                    <h6 class="mb-1">{% if a.is_pinned %}<span class="badge bg-danger me-1">Pinned</span>{% endif %}{{ a.title }}</h6>
+                    <small class="text-muted">{{ a.created_at|date:"M d" }}</small>
+                    <p class="mb-0 mt-1 small">{{ a.content|truncatewords:30 }}</p>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No announcements</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">My Certificates</div>
+            <div class="card-body">
+                {% for cert in certificates %}
+                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                    <div><strong>{{ cert.event.title }}</strong><br><small class="text-muted">{{ cert.issued_at|date:"M d, Y" }}</small></div>
+                    <a href="{% url 'certificate_detail' cert.id %}" class="btn btn-sm btn-outline-success">View</a>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No certificates yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">My Projects</div>
+            <div class="card-body">
+                {% for p in projects %}
+                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                    <div>
+                        <strong>{{ p.title }}</strong>
+                        <span class="badge bg-{% if p.status == 'approved' %}success{% elif p.status == 'rejected' %}danger{% else %}warning{% endif %} ms-2">{{ p.get_status_display }}</span>
+                    </div>
+                    <a href="{% url 'project_detail' p.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No projects submitted</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

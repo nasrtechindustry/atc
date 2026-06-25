@@ -1,0 +1,46 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <h2 class="mb-4 text-center">Verify Certificate</h2>
+        <p class="text-muted text-center mb-4">Enter the certificate ID to verify its authenticity.</p>
+        <form method="get" class="p-4 border rounded bg-light shadow mb-4">
+          <div class="input-group mb-3">
+            <input type="text" name="certificate_id" class="form-control" placeholder="Enter Certificate ID (e.g. CERT-XXXXXXXX)" value="{{ request.GET.certificate_id }}" required>
+            <button type="submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
+        {% if certificate %}
+          <div class="card shadow-sm {% if certificate.is_revoked %}border-danger{% else %}border-success{% endif %}">
+            <div class="card-body text-center p-4">
+              {% if certificate.is_revoked %}
+                <div class="mb-3"><i class="bi bi-x-circle text-danger" style="font-size: 4rem;"></i></div>
+                <h3 class="text-danger">Certificate Revoked</h3>
+                <p>This certificate is no longer valid.</p>
+              {% else %}
+                <div class="mb-3"><i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i></div>
+                <h3 class="text-success">Certificate Verified</h3>
+                <p>This is a valid certificate issued by Aru Tech Community.</p>
+              {% endif %}
+              <hr>
+              <p><strong>Certificate ID:</strong> <code>{{ certificate.certificate_id }}</code></p>
+              <p><strong>Issued to:</strong> {{ certificate.user.get_full_name|default:certificate.user.username }}</p>
+              <p><strong>Event:</strong> {{ certificate.event.title }}</p>
+              <p><strong>Event Date:</strong> {{ certificate.event.start_date|date:"F d, Y" }}</p>
+              <p><strong>Issued At:</strong> {{ certificate.issued_at|date:"F d, Y" }}</p>
+              <p><strong>Status:</strong> {% if certificate.is_revoked %}<span class="badge bg-danger">Revoked</span>{% else %}<span class="badge bg-success">Valid</span>{% endif %}</p>
+            </div>
+          </div>
+        {% elif request.GET.certificate_id %}
+          <div class="card shadow-sm border-warning">
+            <div class="card-body text-center p-4">
+              <i class="bi bi-question-circle text-warning" style="font-size: 4rem;"></i>
+              <h4 class="text-warning mt-3">Certificate Not Found</h4>
+              <p>No certificate matches the ID <code>{{ request.GET.certificate_id }}</code>. Please check and try again.</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+{% endblock dashboard_content %}

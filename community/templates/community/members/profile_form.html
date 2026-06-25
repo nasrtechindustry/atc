@@ -1,0 +1,104 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+                <i class="bi bi-pencil-square text-primary me-2 fs-5"></i>
+                <h5 class="mb-0">Edit Profile</h5>
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+                {% endfor %}
+                {% endif %}
+                {% if form.errors %}
+                <div class="alert alert-danger py-2">{% for field, errors in form.errors.items %}{% for error in errors %}<p class="mb-0">{{ error }}</p>{% endfor %}{% endfor %}</div>
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label fw-medium">Profile Photo</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="rounded-circle overflow-hidden flex-shrink-0 border" style="width:100px;height:100px;">
+                                    <img id="photoPreview" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}https://ui-avatars.com/api/?name={{ user.username }}&background=2124B1&color=fff&size=100{% endif %}" width="100" height="100" style="object-fit:cover;">
+                                </div>
+                                <div>
+                                    <input type="file" name="photo" id="id_photo" class="form-control" accept="image/*" style="max-width:300px;">
+                                    <small class="text-muted d-block mt-1">Click to change. Preview updates instantly.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                        document.getElementById('id_photo')?.addEventListener('change', function(e) {
+                            var file = e.target.files[0];
+                            if (file) {
+                                var reader = new FileReader();
+                                reader.onload = function(ev) {
+                                    document.getElementById('photoPreview').src = ev.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                        </script>
+                        <div class="col-12">
+                            <label class="form-label fw-medium">Bio</label>
+                            <textarea name="bio" id="id_bio" class="form-control" rows="4" placeholder="Tell us about yourself...">{{ form.bio.value|default:'' }}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Phone</label>
+                            <input type="text" name="phone" class="form-control" value="{{ form.phone.value|default:'' }}" placeholder="+255 xxx xxx xxx">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">University</label>
+                            <input type="text" name="university" class="form-control" value="{{ form.university.value|default:'' }}" placeholder="Ardhi University">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Course</label>
+                            <input type="text" name="course" class="form-control" value="{{ form.course.value|default:'' }}" placeholder="Computer Science">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Department</label>
+                            <input type="text" name="department" class="form-control" value="{{ form.department.value|default:'' }}" placeholder="CSM">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Skill Level</label>
+                            <select name="skill_level" class="form-select">
+                                <option value="" {% if not form.skill_level.value %}selected{% endif %}>Select...</option>
+                                <option value="beginner" {% if form.skill_level.value == 'beginner' %}selected{% endif %}>Beginner</option>
+                                <option value="intermediate" {% if form.skill_level.value == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                                <option value="advanced" {% if form.skill_level.value == 'advanced' %}selected{% endif %}>Advanced</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Interests <small class="text-muted">(comma separated)</small></label>
+                            <input type="text" name="interests" class="form-control" value="{{ form.interests.value|default:'' }}" placeholder="Python, Django, AI">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">GitHub URL</label>
+                            <input type="url" name="github_url" class="form-control" value="{{ form.github_url.value|default:'' }}" placeholder="https://github.com/username">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">LinkedIn URL</label>
+                            <input type="url" name="linkedin_url" class="form-control" value="{{ form.linkedin_url.value|default:'' }}" placeholder="https://linkedin.com/in/username">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">Portfolio URL</label>
+                            <input type="url" name="portfolio_url" class="form-control" value="{{ form.portfolio_url.value|default:'' }}" placeholder="https://your-site.com">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg me-1"></i> Save Changes</button>
+                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}

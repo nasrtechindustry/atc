@@ -1,0 +1,43 @@
+{% extends 'community/dashboard/dashboard_base.html' %}
+{% load static %}
+{% block dashboard_content %}
+{% block breadcrumbs %}<ol class="breadcrumb mb-0 small">
+<li class="breadcrumb-item"><a href="{% url 'certificate_list' %}">Certificates</a></li>
+<li class="breadcrumb-item active">{{ certificate.certificate_id }}</li>
+</ol>{% endblock %}
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-success">
+          <div class="card-body text-center p-5">
+            {% if certificate.is_revoked %}
+              <div class="alert alert-danger mb-4"><i class="bi bi-exclamation-triangle"></i> This certificate has been revoked.</div>
+            {% endif %}
+            <div class="mb-4">
+              <i class="bi bi-award text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="mb-1">Certificate of Participation</h2>
+            <p class="text-muted">This certifies that</p>
+            <h3 class="fw-bold">{{ certificate.user.get_full_name|default:certificate.user.username }}</h3>
+            <p class="text-muted">has successfully participated in</p>
+            <h4>{{ certificate.event.title }}</h4>
+            <p class="text-muted">held on {{ certificate.event.start_date|date:"F d, Y" }}</p>
+            <hr>
+            <div class="row g-3 text-start">
+              <div class="col-sm-6"><strong>Certificate ID:</strong> <code>{{ certificate.certificate_id }}</code></div>
+              <div class="col-sm-6"><strong>Issued At:</strong> {{ certificate.issued_at|date:"F d, Y H:i" }}</div>
+              <div class="col-sm-6"><strong>Status:</strong> {% if certificate.is_revoked %}<span class="badge bg-danger">Revoked</span>{% else %}<span class="badge bg-success">Valid</span>{% endif %}</div>
+              <div class="col-sm-6"><strong>Event Category:</strong> {{ certificate.event.get_category_display }}</div>
+            </div>
+            <hr>
+            <p class="text-muted small">Issued by Aru Tech Community</p>
+            {% if user.is_staff and not certificate.is_revoked %}
+              <form method="post" action="{% url 'certificate_list' certificate.certificate_id %}" class="d-inline" onsubmit="return confirm('Revoke this certificate?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Revoke Certificate</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock dashboard_content %}
