@@ -148,14 +148,23 @@ class Command(BaseCommand):
             })
 
         resources = [
-            ('Python for Beginners', 'python', 'https://docs.python.org/3/tutorial/'),
-            ('Django Official Docs', 'django', 'https://docs.djangoproject.com/'),
-            ('JavaScript Guide', 'javascript', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide'),
+            ('Python for Beginners', 'python', 'Official Python tutorial covering basics to advanced topics.', 'https://docs.python.org/3/tutorial/'),
+            ('Django Official Docs', 'django', 'Comprehensive Django framework documentation and guides.', 'https://docs.djangoproject.com/'),
+            ('JavaScript Guide', 'javascript', 'In-depth JavaScript guide from MDN Web Docs.', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide'),
+            ('Figma UI/UX Design Course', 'ui_ux', 'Learn UI/UX design principles with Figma.', 'https://www.figma.com/resources/learn-design/'),
+            ('Cybersecurity Basics', 'cybersecurity', 'Introduction to cybersecurity concepts and practices.', 'https://www.coursera.org/learn/introduction-to-cyber-security'),
+            ('Machine Learning Crash Course', 'ai', 'Google\'s fast-paced intro to ML with TensorFlow APIs.', 'https://developers.google.com/machine-learning/crash-course'),
+            ('Data Science Handbook', 'data_science', 'Practical guide to data analysis, visualization, and ML.', 'https://jakevdp.github.io/PythonDataScienceHandbook/'),
+            ('Tech Career Roadmap', 'career', 'Guide to building a career in tech from scratch.', 'https://roadmap.sh/'),
+            ('Git & GitHub Handbook', 'git', 'Essential Git commands and GitHub workflows.', 'https://guides.github.com/introduction/git-handbook/'),
+            ('React Frontend Guide', 'javascript', 'Learn React.js for building modern user interfaces.', 'https://react.dev/learn'),
+            ('PostgreSQL Tutorial', 'other', 'Learn PostgreSQL database management and queries.', 'https://www.postgresqltutorial.com/'),
+            ('Django REST Framework', 'django', 'Build REST APIs with Django REST Framework.', 'https://www.django-rest-framework.org/'),
         ]
-        for title, category, url in resources:
+        for title, category, desc, url in resources:
             Resource.objects.get_or_create(title=title, defaults={
-                'category': category, 'url': url, 'is_published': True,
-                'is_featured': title == 'Python for Beginners',
+                'category': category, 'url': url, 'description': desc, 'is_published': True,
+                'is_featured': title in ['Python for Beginners', 'Git & GitHub Handbook', 'Machine Learning Crash Course'],
                 'created_by': admin,
             })
 
