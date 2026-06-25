@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cqwc3_!!43rv8!9mems5m*5*!l
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 # Updated ALLOWED_HOSTS to include the specific deploy.tz domain
-ALLOWED_HOSTS = ['aru-tech-community.deploy.tz' , 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['aru-tech-community.deploy.tz' , 'localhost', '127.0.0.1', 'atc.codegraphics.co.tz', 'realtime.atc.codegraphics.co.tz']
 
 
 # Application definition
