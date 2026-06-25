@@ -11,9 +11,6 @@ staticfiles/
 db.sqlite3
 *.md
 *.pdf
-community/static/img/*.jpg
-community/static/img/*.jpeg
-community/static/img/*.png
-community/static/img/*.gif
+community/static/img/
 community/static/scss/
 community/static/node_modules/
